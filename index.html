@@ -2,12 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<meta name="mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="Levelis"/>
-<meta name="theme-color" content="#111111"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>LEVELIS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
@@ -259,152 +254,138 @@
   .scard-scroll{flex:0 0 160px;min-width:160px;text-align:center}
   .scard-scroll .cat-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-  /* ─────────────────────────────────────────────────────────
-     Éléments de navigation : masquage sélectif selon contexte
-     ───────────────────────────────────────────────────────── */
-  .tab-icon  { display:none }   /* caché sur PC */
-  .tab-short { display:none }   /* caché partout sauf mobile */
+  /* ── Affichage conditionnel desktop / mobile ── */
+  .task-mobile  { display:none }
+  .task-desktop { display:block }
 
-  /* safe area iPhone (notch / Dynamic Island) */
+  /* ── Vue cartes mobile (structure) ── */
+  .m-task-card {
+    background:var(--bg2); border:0.5px solid var(--border);
+    border-radius:10px; padding:10px 12px; margin-bottom:8px;
+  }
+  .m-task-header {
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:10px;
+  }
+  .m-task-name { font-size:13px; font-weight:600; flex:1; padding-right:8px }
+  .m-task-xp   { font-family:'Bebas Neue',sans-serif; font-size:16px; font-weight:700; white-space:nowrap }
+  .m-days-row  { display:grid; grid-template-columns:repeat(7,1fr); gap:4px }
+  .m-day-col   { display:flex; flex-direction:column; align-items:center; gap:3px }
+  .m-day-label { font-size:9px; color:var(--text3); font-weight:600; text-transform:uppercase; letter-spacing:.3px }
+  .m-day-btns  { display:flex; flex-direction:column; gap:3px }
+
+  /* ── Éléments nav : masqués par défaut (PC) ── */
+  .tab-icon  { display:none }
+  .tab-short { display:none }
+
+  /* safe area iPhone */
   @supports(padding:max(0px)){
-    body { padding-bottom: env(safe-area-inset-bottom) }
+    body { padding-bottom:env(safe-area-inset-bottom) }
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     MOBILE  ≤ 640px  — aucune règle PC touchée
-     ══════════════════════════════════════════════════════════ */
+  /* ══════════════════════════════════════════════════════
+     MOBILE ≤ 640px — rien de PC n'est touché
+     ══════════════════════════════════════════════════════ */
   @media(max-width:640px){
 
-    /* ── Globals ── */
-    html,body { font-size:15px }
-    .header { padding:14px 16px 0 }
+    .header { padding:12px 14px 0 }
     .header h1 { font-size:22px }
     .save-indicator { font-size:10px }
     .app { padding:10px 12px 90px }
 
-    /* ── Navigation : barre fixe en bas ── */
+    /* Navigation fixe en bas */
     .tabs {
       position:fixed; bottom:0; left:0; right:0;
       display:grid; grid-template-columns:repeat(4,1fr);
       gap:0; margin-bottom:0; border-bottom:none;
       border-top:1px solid var(--border2);
-      background:var(--bg2);
-      z-index:200;
+      background:var(--bg2); z-index:200;
       padding-bottom:env(safe-area-inset-bottom,0px);
       box-shadow:0 -4px 24px rgba(0,0,0,.35);
     }
     .tab {
-      padding:8px 2px 6px;
-      font-size:0;             /* masque le texte hérité */
-      border-bottom:none;
-      border-top:3px solid transparent;
+      padding:8px 2px 6px; font-size:0;
+      border-bottom:none; border-top:3px solid transparent;
       margin-bottom:0;
-      display:flex; flex-direction:column; align-items:center; gap:3px;
+      display:flex; flex-direction:column; align-items:center; gap:2px;
       border-radius:0;
     }
     .tab.active { border-top-color:var(--red); border-bottom:none }
     .tab-icon  { display:block; font-size:20px; line-height:1 }
     .tab-full  { display:none }
-    .tab-short { display:block; font-size:10px; font-weight:600;
-                 color:var(--text2); letter-spacing:.2px; line-height:1 }
+    .tab-short { display:block; font-size:10px; font-weight:600; color:var(--text2); line-height:1 }
     .tab.active .tab-short { color:var(--red) }
 
-    /* ── Hero ── */
-    .hero { padding:14px 16px; gap:12px; border-radius:10px; margin-bottom:14px }
-    .hero-xp { font-size:48px }
+    /* Hero */
+    .hero { padding:12px 14px; gap:10px; border-radius:10px; margin-bottom:12px }
+    .hero-xp { font-size:44px }
     .hero .label { font-size:10px }
-    .hero-badge { font-size:12px; padding:3px 10px; margin-top:4px }
-    .hero-right { font-size:12px }
+    .hero-badge { font-size:12px; padding:3px 10px; margin-top:3px }
 
-    /* ── Week nav ── */
-    .week-nav { gap:8px; margin-bottom:12px }
-    .week-nav button {
-      padding:0 14px; height:40px; font-size:14px;
-      min-width:44px; border-radius:10px;
-    }
+    /* Week nav */
+    .week-nav { gap:8px; margin-bottom:10px }
+    .week-nav button { padding:0 12px; height:40px; font-size:14px; border-radius:10px }
     .week-nav .week-label { font-size:12px; text-align:center; flex:1 }
 
-    /* ── Summary cards : 2 colonnes ── */
-    .summary-grid {
-      grid-template-columns:repeat(2,1fr);
-      gap:8px; margin-bottom:12px;
-    }
+    /* Summary cards 2 colonnes */
+    .summary-grid { grid-template-columns:repeat(2,1fr); gap:8px; margin-bottom:12px }
     .scard { padding:10px 10px }
     .scard .xp-val { font-size:20px }
     .scard .cat-label { font-size:9.5px }
     .scard .rank-badge { font-size:10px; padding:2px 6px }
-    .scard .xp-max { font-size:10px }
 
-    /* ── Tâches : tableau scrollable, boutons touch-friendly ── */
-    .task-table-wrap { -webkit-overflow-scrolling:touch }
-    .task-grid { min-width:460px }
-    .task-grid colgroup col.col-name { width:120px }
-    .task-grid colgroup col.col-day  { width:44px }
-    .task-grid colgroup col.col-xp   { width:56px }
-    .task-grid tbody td:first-child   { font-size:11px; padding:6px 8px }
-    .task-grid tbody td:last-child    { font-size:11px; padding:6px 6px }
-    .task-grid thead th               { font-size:8.5px }
+    /* Basculement vers la vue cartes */
+    .task-desktop { display:none }
+    .task-mobile  { display:block }
 
-    /* Boutons ✕ ½ ✓ — cible 36px minimum pour le doigt */
-    .dot-btn { width:34px; height:34px; font-size:13px }
-    .day-cell { padding:3px 1px }
-    .day-btns { gap:2px }
+    /* Boutons dans les cartes */
+    .dot-btn { width:30px; height:30px; font-size:12px; border-width:2px }
+    .m-task-name { font-size:12px }
+    .m-task-xp   { font-size:15px }
+    .m-day-label { font-size:8px }
+    .m-days-row  { gap:3px }
+    .m-day-btns  { gap:3px }
 
-    /* ── En-têtes section ── */
+    /* Section headers */
     .task-section-header h3 { font-size:16px }
     .cat-pill { font-size:10px; padding:2px 8px }
-    .task-section { margin-bottom:16px }
+    .task-section { margin-bottom:18px }
 
-    /* ── Gestion des tâches ── */
-    .manage-row {
-      grid-template-columns:1fr auto auto;
-      gap:6px; padding:9px 10px;
-    }
+    /* Manage */
+    .manage-row { gap:6px; padding:9px 10px }
     .manage-row .task-name { font-size:13px }
     .manage-row select { font-size:11px; max-width:100px }
     .del-btn { width:32px; height:32px }
-
-    /* Formulaire ajout : vertical */
     .add-form { flex-direction:column; gap:8px }
-    .add-form input,
-    .add-form select { width:100%; min-width:unset; height:44px; font-size:15px }
-    .add-form button  { width:100%; height:44px; font-size:15px }
+    .add-form input, .add-form select { width:100%; min-width:unset; height:44px; font-size:15px }
+    .add-form button { width:100%; height:44px; font-size:15px }
 
-    /* ── Tableau Scores : scroll horizontal ── */
+    /* Scores */
     #tab-scores { overflow-x:auto }
     .rank-table { font-size:11px; min-width:520px }
-    .rank-table th,
-    .rank-table td { padding:6px 6px }
+    .rank-table th, .rank-table td { padding:6px 6px }
     .rank-name { font-size:10px; padding:2px 6px }
 
-    /* ── Settings ── */
+    /* Settings */
     .theme-toggle { flex-direction:column; gap:8px }
     .theme-btn { padding:13px; font-size:14px; min-height:48px }
     .palette-row { gap:12px }
     .palette-btn { width:44px; height:44px }
 
-    /* ── Gestion catégories ── */
-    .cat-manage-row {
-      grid-template-columns:32px 1fr auto auto;
-      gap:6px 8px; padding:10px 12px;
-    }
+    /* Catégories */
+    .cat-manage-row { gap:6px 8px; padding:10px 12px }
     .cat-color-swatch { width:30px; height:30px }
     .cat-name-display  { font-size:13px }
     .cat-action-btn    { width:36px; height:36px; font-size:16px }
-    .cat-task-count    { font-size:10px }
 
-    /* Toast : remonter au-dessus de la nav */
+    /* Toast au-dessus de la nav */
     #xp-toast { bottom:80px !important }
   }
 
-  /* ── Très petits écrans (≤ 360px) ── */
   @media(max-width:360px){
     .summary-grid { grid-template-columns:repeat(2,1fr) }
-    .dot-btn { width:30px; height:30px; font-size:11px }
-    .task-grid colgroup col.col-name { width:100px }
-    .task-grid colgroup col.col-day  { width:38px }
-    .task-grid colgroup col.col-xp   { width:50px }
-    .header h1 { font-size:19px }
+    .dot-btn { width:26px; height:26px; font-size:11px }
+    .m-day-label { font-size:7px }
   }
 </style>
 </head>
@@ -424,7 +405,7 @@
       <span class="tab-icon">📊</span><span class="tab-full">Tracker</span><span class="tab-short">Tracker</span>
     </button>
     <button class="tab" data-tab="scores" onclick="showTab('scores',this)">
-      <span class="tab-icon">🏆</span><span class="tab-full">Scores & Rangs</span><span class="tab-short">Scores</span>
+      <span class="tab-icon">🏆</span><span class="tab-full">Scores &amp; Rangs</span><span class="tab-short">Scores</span>
     </button>
     <button class="tab" data-tab="manage" onclick="showTab('manage',this)">
       <span class="tab-icon">✏️</span><span class="tab-full">Gérer les tâches</span><span class="tab-short">Tâches</span>
@@ -657,8 +638,10 @@ function renderTracker() {
       <div class="task-section-header">
         <h3 style="color:${c.color}">${cat}</h3>
         <span class="cat-pill" style="${catPillStyle(cat)}">${catTasks.length} tâches · ${catXP(wk,cat).toFixed(1)} / ${catMax(cat)} XP</span>
-      </div>
-      <div class="task-table-wrap"><table class="task-grid">
+      </div>`;
+
+    /* ── VERSION DESKTOP : tableau horizontal ── */
+    h+=`<div class="task-table-wrap task-desktop"><table class="task-grid">
         <colgroup>
           <col class="col-name"/>
           ${DAYS.map(()=>'<col class="col-day"/>').join('')}
@@ -683,7 +666,33 @@ function renderTracker() {
       const rowXP=DAYS.reduce((s,d)=>s+getScore(wk,t.id,d),0);
       h+=`<td style="color:${c.color}">${rowXP.toFixed(1)} XP</td></tr>`;
     });
-    h+=`</tbody></table></div></div>`;
+    h+=`</tbody></table></div>`;
+
+    /* ── VERSION MOBILE : cartes par tâche ── */
+    h+=`<div class="task-mobile">`;
+    catTasks.forEach(t => {
+      const rowXP=DAYS.reduce((s,d)=>s+getScore(wk,t.id,d),0);
+      h+=`<div class="m-task-card">
+        <div class="m-task-header">
+          <span class="m-task-name" style="color:${c.color}">${t.name}</span>
+          <span class="m-task-xp" style="color:${c.color}">${rowXP.toFixed(1)} XP</span>
+        </div>
+        <div class="m-days-row">`;
+      DAYS.forEach(day => {
+        const sc=getScore(wk,t.id,day);
+        h+=`<div class="m-day-col">
+          <div class="m-day-label">${day.slice(0,2)}</div>
+          <div class="m-day-btns">`;
+        [[0,'red','✕'],[0.5,'ora','½'],[1,'grn','✓']].forEach(([v,cls,lbl])=>{
+          h+=`<button class="dot-btn ${cls}${sc===v?' active':''}" onclick="toggleScore('${wk}',${t.id},'${day}',${v})">${lbl}</button>`;
+        });
+        h+=`</div></div>`;
+      });
+      h+=`</div></div>`;
+    });
+    h+=`</div>`;
+
+    h+=`</div>`; // end task-section
   });
 
   document.getElementById('tab-tracker').innerHTML = h;
