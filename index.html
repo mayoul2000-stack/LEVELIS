@@ -2,7 +2,12 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Levelis"/>
+<meta name="theme-color" content="#111111"/>
 <title>LEVELIS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
@@ -253,6 +258,154 @@
   .summary-scroll::-webkit-scrollbar{display:none}
   .scard-scroll{flex:0 0 160px;min-width:160px;text-align:center}
   .scard-scroll .cat-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* ─────────────────────────────────────────────────────────
+     Éléments de navigation : masquage sélectif selon contexte
+     ───────────────────────────────────────────────────────── */
+  .tab-icon  { display:none }   /* caché sur PC */
+  .tab-short { display:none }   /* caché partout sauf mobile */
+
+  /* safe area iPhone (notch / Dynamic Island) */
+  @supports(padding:max(0px)){
+    body { padding-bottom: env(safe-area-inset-bottom) }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     MOBILE  ≤ 640px  — aucune règle PC touchée
+     ══════════════════════════════════════════════════════════ */
+  @media(max-width:640px){
+
+    /* ── Globals ── */
+    html,body { font-size:15px }
+    .header { padding:14px 16px 0 }
+    .header h1 { font-size:22px }
+    .save-indicator { font-size:10px }
+    .app { padding:10px 12px 90px }
+
+    /* ── Navigation : barre fixe en bas ── */
+    .tabs {
+      position:fixed; bottom:0; left:0; right:0;
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:0; margin-bottom:0; border-bottom:none;
+      border-top:1px solid var(--border2);
+      background:var(--bg2);
+      z-index:200;
+      padding-bottom:env(safe-area-inset-bottom,0px);
+      box-shadow:0 -4px 24px rgba(0,0,0,.35);
+    }
+    .tab {
+      padding:8px 2px 6px;
+      font-size:0;             /* masque le texte hérité */
+      border-bottom:none;
+      border-top:3px solid transparent;
+      margin-bottom:0;
+      display:flex; flex-direction:column; align-items:center; gap:3px;
+      border-radius:0;
+    }
+    .tab.active { border-top-color:var(--red); border-bottom:none }
+    .tab-icon  { display:block; font-size:20px; line-height:1 }
+    .tab-full  { display:none }
+    .tab-short { display:block; font-size:10px; font-weight:600;
+                 color:var(--text2); letter-spacing:.2px; line-height:1 }
+    .tab.active .tab-short { color:var(--red) }
+
+    /* ── Hero ── */
+    .hero { padding:14px 16px; gap:12px; border-radius:10px; margin-bottom:14px }
+    .hero-xp { font-size:48px }
+    .hero .label { font-size:10px }
+    .hero-badge { font-size:12px; padding:3px 10px; margin-top:4px }
+    .hero-right { font-size:12px }
+
+    /* ── Week nav ── */
+    .week-nav { gap:8px; margin-bottom:12px }
+    .week-nav button {
+      padding:0 14px; height:40px; font-size:14px;
+      min-width:44px; border-radius:10px;
+    }
+    .week-nav .week-label { font-size:12px; text-align:center; flex:1 }
+
+    /* ── Summary cards : 2 colonnes ── */
+    .summary-grid {
+      grid-template-columns:repeat(2,1fr);
+      gap:8px; margin-bottom:12px;
+    }
+    .scard { padding:10px 10px }
+    .scard .xp-val { font-size:20px }
+    .scard .cat-label { font-size:9.5px }
+    .scard .rank-badge { font-size:10px; padding:2px 6px }
+    .scard .xp-max { font-size:10px }
+
+    /* ── Tâches : tableau scrollable, boutons touch-friendly ── */
+    .task-table-wrap { -webkit-overflow-scrolling:touch }
+    .task-grid { min-width:460px }
+    .task-grid colgroup col.col-name { width:120px }
+    .task-grid colgroup col.col-day  { width:44px }
+    .task-grid colgroup col.col-xp   { width:56px }
+    .task-grid tbody td:first-child   { font-size:11px; padding:6px 8px }
+    .task-grid tbody td:last-child    { font-size:11px; padding:6px 6px }
+    .task-grid thead th               { font-size:8.5px }
+
+    /* Boutons ✕ ½ ✓ — cible 36px minimum pour le doigt */
+    .dot-btn { width:34px; height:34px; font-size:13px }
+    .day-cell { padding:3px 1px }
+    .day-btns { gap:2px }
+
+    /* ── En-têtes section ── */
+    .task-section-header h3 { font-size:16px }
+    .cat-pill { font-size:10px; padding:2px 8px }
+    .task-section { margin-bottom:16px }
+
+    /* ── Gestion des tâches ── */
+    .manage-row {
+      grid-template-columns:1fr auto auto;
+      gap:6px; padding:9px 10px;
+    }
+    .manage-row .task-name { font-size:13px }
+    .manage-row select { font-size:11px; max-width:100px }
+    .del-btn { width:32px; height:32px }
+
+    /* Formulaire ajout : vertical */
+    .add-form { flex-direction:column; gap:8px }
+    .add-form input,
+    .add-form select { width:100%; min-width:unset; height:44px; font-size:15px }
+    .add-form button  { width:100%; height:44px; font-size:15px }
+
+    /* ── Tableau Scores : scroll horizontal ── */
+    #tab-scores { overflow-x:auto }
+    .rank-table { font-size:11px; min-width:520px }
+    .rank-table th,
+    .rank-table td { padding:6px 6px }
+    .rank-name { font-size:10px; padding:2px 6px }
+
+    /* ── Settings ── */
+    .theme-toggle { flex-direction:column; gap:8px }
+    .theme-btn { padding:13px; font-size:14px; min-height:48px }
+    .palette-row { gap:12px }
+    .palette-btn { width:44px; height:44px }
+
+    /* ── Gestion catégories ── */
+    .cat-manage-row {
+      grid-template-columns:32px 1fr auto auto;
+      gap:6px 8px; padding:10px 12px;
+    }
+    .cat-color-swatch { width:30px; height:30px }
+    .cat-name-display  { font-size:13px }
+    .cat-action-btn    { width:36px; height:36px; font-size:16px }
+    .cat-task-count    { font-size:10px }
+
+    /* Toast : remonter au-dessus de la nav */
+    #xp-toast { bottom:80px !important }
+  }
+
+  /* ── Très petits écrans (≤ 360px) ── */
+  @media(max-width:360px){
+    .summary-grid { grid-template-columns:repeat(2,1fr) }
+    .dot-btn { width:30px; height:30px; font-size:11px }
+    .task-grid colgroup col.col-name { width:100px }
+    .task-grid colgroup col.col-day  { width:38px }
+    .task-grid colgroup col.col-xp   { width:50px }
+    .header h1 { font-size:19px }
+  }
 </style>
 </head>
 <body>
@@ -267,10 +420,18 @@
 
 <div class="app">
   <div class="tabs">
-    <button class="tab active" data-tab="tracker" onclick="showTab('tracker',this)">Tracker</button>
-    <button class="tab" data-tab="scores" onclick="showTab('scores',this)">Scores & Rangs</button>
-    <button class="tab" data-tab="manage" onclick="showTab('manage',this)">Gérer les tâches</button>
-    <button class="tab" data-tab="settings" onclick="showTab('settings',this)">⚙ Settings</button>
+    <button class="tab active" data-tab="tracker" onclick="showTab('tracker',this)">
+      <span class="tab-icon">📊</span><span class="tab-full">Tracker</span><span class="tab-short">Tracker</span>
+    </button>
+    <button class="tab" data-tab="scores" onclick="showTab('scores',this)">
+      <span class="tab-icon">🏆</span><span class="tab-full">Scores & Rangs</span><span class="tab-short">Scores</span>
+    </button>
+    <button class="tab" data-tab="manage" onclick="showTab('manage',this)">
+      <span class="tab-icon">✏️</span><span class="tab-full">Gérer les tâches</span><span class="tab-short">Tâches</span>
+    </button>
+    <button class="tab" data-tab="settings" onclick="showTab('settings',this)">
+      <span class="tab-icon">⚙️</span><span class="tab-full">⚙ Settings</span><span class="tab-short">Réglages</span>
+    </button>
   </div>
   <div id="tab-tracker" class="panel active"></div>
   <div id="tab-scores" class="panel"></div>
