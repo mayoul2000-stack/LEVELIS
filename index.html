@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LEVELIS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --red:#E8312A;--red2:#ff4b43;
+    --gold:#F5C518;--silver:#C0C0C0;--bronze:#CD7F32;
+    --plat:#4FC3F7;--diam:#AB47BC;--immo:#FF7043;
+    --bg:#111111;--bg2:#1a1a1a;--bg3:#222222;
+    --border:#2a2a2a;--border2:#333;
+    --text:#f0f0f0;--text2:#aaa;--text3:#555;
+  }
+
+  /* ════════════════════════════════════════════════════
+     SYSTÈME DE THÈME — logique HSL uniforme
+     Clair  : H 30% sat, L 91/95/86% (fond clair et aéré)
+     Accent clair  : H 55% sat, L 36% → 48%
+     ════════════════════════════════════════════════════ */
+
+  /* ── Mode clair neutre (sans accent) ── */
+  body.mode-light {
+    --bg:hsl(0,0%,91%); --bg2:hsl(0,0%,96%); --bg3:hsl(0,0%,85%);
+    --border:hsl(0,0%,80%); --border2:hsl(0,0%,70%);
+    --text:hsl(0,0%,10%); --text2:hsl(0,0%,36%); --text3:hsl(0,0%,60%);
+    --red:hsl(0,72%,42%); --red2:hsl(0,72%,52%);
+    --del-hover-bg:hsl(0,60%,95%);
+    --cat-physique-bg:hsl(122,30%,88%);  --cat-physique-text:hsl(122,45%,22%);
+    --cat-spirituel-bg:hsl(231,30%,88%); --cat-spirituel-text:hsl(231,45%,22%);
+    --cat-discipline-bg:hsl(14,30%,88%); --cat-discipline-text:hsl(14,45%,22%);
+    --cat-travail-bg:hsl(187,30%,88%);   --cat-travail-text:hsl(187,45%,22%);
+    --cat-mental-bg:hsl(4,30%,88%);      --cat-mental-text:hsl(4,45%,22%);
+  }
+
+  /* ── Accents sombre : seule la couleur dominante change ── */
+  body.accent-rose   { --red:hsl(330,70%,55%); --red2:hsl(330,70%,65%); }
+  body.accent-blue   { --red:hsl(211,70%,55%); --red2:hsl(211,70%,65%); }
+  body.accent-yellow { --red:hsl(38,82%,46%);  --red2:hsl(38,82%,56%);  }
+  body.accent-violet { --red:hsl(262,70%,55%); --red2:hsl(262,70%,65%); }
+  body.accent-green  { --red:hsl(152,60%,40%); --red2:hsl(152,60%,50%); }
+
+  /* ── Accents clair : fond pastel clair + accent + cat-pills ── */
+  body.mode-light.accent-rose {
+    --bg:hsl(345,40%,91%); --bg2:hsl(345,40%,96%); --bg3:hsl(345,40%,85%);
+    --border:hsl(345,30%,78%); --border2:hsl(345,30%,66%);
+    --text:hsl(345,40%,12%); --text2:hsl(345,28%,38%); --text3:hsl(345,18%,60%);
+    --red:hsl(330, 72%, 60%); --red2:hsl(330, 68%, 55%);
+    --del-hover-bg:hsl(345,50%,96%);
+    --cat-physique-bg:hsl(122,28%,88%);  --cat-physique-text:hsl(122,42%,20%);
+    --cat-spirituel-bg:hsl(231,28%,88%); --cat-spirituel-text:hsl(231,42%,20%);
+    --cat-discipline-bg:hsl(14,28%,88%); --cat-discipline-text:hsl(14,42%,20%);
+    --cat-travail-bg:hsl(187,28%,88%);   --cat-travail-text:hsl(187,42%,20%);
+    --cat-mental-bg:hsl(4,28%,88%);      --cat-mental-text:hsl(4,42%,20%);
+  }
+  body.mode-light.accent-blue {
+    --bg:hsl(211,40%,91%); --bg2:hsl(211,40%,96%); --bg3:hsl(211,40%,84%);
+    --border:hsl(211,30%,76%); --border2:hsl(211,30%,64%);
+    --text:hsl(211,40%,10%); --text2:hsl(211,28%,34%); --text3:hsl(211,18%,58%);
+    --red:hsl(211, 65%, 49%); --red2:hsl(211,62%,46%);
+    --del-hover-bg:hsl(211,50%,96%);
+    --cat-physique-bg:hsl(122,28%,88%);  --cat-physique-text:hsl(122,42%,20%);
+    --cat-spirituel-bg:hsl(231,28%,88%); --cat-spirituel-text:hsl(231,42%,20%);
+    --cat-discipline-bg:hsl(14,28%,88%); --cat-discipline-text:hsl(14,42%,20%);
+    --cat-travail-bg:hsl(187,28%,88%);   --cat-travail-text:hsl(187,42%,20%);
+    --cat-mental-bg:hsl(4,28%,88%);      --cat-mental-text:hsl(4,42%,20%);
+  }
+  body.mode-light.accent-yellow {
+    --bg:hsl(46,55%,88%); --bg2:hsl(46,55%,93%); --bg3:hsl(46,55%,82%);
+    --border:hsl(46,40%,74%); --border2:hsl(46,40%,62%);
+    --text:hsl(46,60%,10%); --text2:hsl(46,38%,30%); --text3:hsl(46,22%,54%);
+    --red:hsl(41, 100%, 63%); --red2:hsl(32,72%,46%);
+    --del-hover-bg:hsl(46,55%,96%);
+    --cat-physique-bg:hsl(122,28%,88%);  --cat-physique-text:hsl(122,42%,20%);
+    --cat-spirituel-bg:hsl(231,28%,88%); --cat-spirituel-text:hsl(231,42%,20%);
+    --cat-discipline-bg:hsl(14,28%,88%); --cat-discipline-text:hsl(14,42%,20%);
+    --cat-travail-bg:hsl(187,28%,88%);   --cat-travail-text:hsl(187,42%,20%);
+    --cat-mental-bg:hsl(4,28%,88%);      --cat-mental-text:hsl(4,42%,20%);
+  }
+  body.mode-light.accent-violet {
+    --bg:hsl(262,32%,91%); --bg2:hsl(262,32%,96%); --bg3:hsl(262,32%,84%);
+    --border:hsl(262,24%,76%); --border2:hsl(262,24%,64%);
+    --text:hsl(262,40%,10%); --text2:hsl(262,26%,34%); --text3:hsl(262,16%,58%);
+    --red:hsl(262, 60%, 50%); --red2:hsl(262,62%,52%);
+    --del-hover-bg:hsl(262,45%,96%);
+    --cat-physique-bg:hsl(122,28%,88%);  --cat-physique-text:hsl(122,42%,20%);
+    --cat-spirituel-bg:hsl(231,28%,88%); --cat-spirituel-text:hsl(231,42%,20%);
+    --cat-discipline-bg:hsl(14,28%,88%); --cat-discipline-text:hsl(14,42%,20%);
+    --cat-travail-bg:hsl(187,28%,88%);   --cat-travail-text:hsl(187,42%,20%);
+    --cat-mental-bg:hsl(4,28%,88%);      --cat-mental-text:hsl(4,42%,20%);
+  }
+  body.mode-light.accent-green {
+    --bg:hsl(152,32%,90%); --bg2:hsl(152,32%,95%); --bg3:hsl(152,32%,83%);
+    --border:hsl(152,24%,74%); --border2:hsl(152,24%,62%);
+    --text:hsl(152,40%,8%); --text2:hsl(152,26%,28%); --text3:hsl(152,16%,52%);
+    --red:hsl(152, 58%, 36%); --red2:hsl(152,55%,38%);
+    --del-hover-bg:hsl(152,40%,95%);
+    --cat-physique-bg:hsl(122,28%,88%);  --cat-physique-text:hsl(122,42%,20%);
+    --cat-spirituel-bg:hsl(231,28%,88%); --cat-spirituel-text:hsl(231,42%,20%);
+    --cat-discipline-bg:hsl(14,28%,88%); --cat-discipline-text:hsl(14,42%,20%);
+    --cat-travail-bg:hsl(187,28%,88%);   --cat-travail-text:hsl(187,42%,20%);
+    --cat-mental-bg:hsl(4,28%,88%);      --cat-mental-text:hsl(4,42%,20%);
+  }
+  html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}
+  h1,h2,h3{font-family:'Bebas Neue',sans-serif;letter-spacing:1px}
+
+  /* HEADER */
+  .header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 24px 0;
+  }
+  .header h1{font-size:28px;color:var(--red);letter-spacing:2px}
+  .save-indicator{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:6px}
+  .save-dot{width:7px;height:7px;border-radius:50%;background:var(--text3);transition:background .4s}
+  .save-dot.saved{background:#4CAF50}
+  .save-dot.saving{background:#FF9800}
+
+  .app{padding:12px 24px 32px}
+
+  /* TABS */
+  .tabs{display:flex;gap:6px;margin-bottom:20px;border-bottom:2px solid var(--border)}
+  .tab{padding:8px 20px;cursor:pointer;font-size:14px;font-weight:500;border:none;background:transparent;color:var(--text2);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s}
+  .tab.active{color:var(--red);border-bottom-color:var(--red)}
+  .tab:hover{color:var(--text)}
+
+  .panel{display:none}.panel.active{display:block}
+
+  /* SUMMARY CARDS */
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px}
+  .scard{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:12px 14px;text-align:center}
+  .scard .cat-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:5px}
+  .scard .cat-label{font-size:11px;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+  .scard .xp-val{font-size:22px;font-weight:500;font-family:'Bebas Neue',sans-serif;line-height:1.1;margin:4px 0 2px}
+  .scard .rank-badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;display:inline-block}
+  .scard .xp-max{font-size:11px;color:var(--text3)}
+
+  .r-hors{background:#888;color:#fff}.r-bronze{background:#CD7F32;color:#fff}
+  .r-argent{background:#999;color:#222}.r-or{background:#F5C518;color:#333}
+  .r-platine{background:#4FC3F7;color:#fff}.r-diamant{background:#AB47BC;color:#fff}
+  .r-immortal{background:#FF7043;color:#fff}
+
+  .prog-wrap{margin:4px 0 2px;background:var(--border);border-radius:4px;height:5px;overflow:hidden}
+  .prog-bar{height:100%;border-radius:4px;transition:width .4s}
+
+  /* HERO */
+  .hero{background:var(--red);color:#fff;border-radius:12px;padding:18px 24px;margin-bottom:20px;display:flex;align-items:center;gap:18px}
+  .hero-xp{font-size:56px;font-family:'Bebas Neue',sans-serif;line-height:1}
+  .hero .label{font-size:12px;opacity:.8;text-transform:uppercase;letter-spacing:.5px}
+  .hero-badge{font-size:14px;padding:4px 14px;border-radius:20px;font-weight:500;background:rgba(255,255,255,.2);color:#fff;margin-top:6px;display:inline-block}
+  .hero-right{margin-left:auto;text-align:right}
+  .hero-pct{font-size:13px;opacity:.8}
+
+  /* TASKS */
+  .task-section{margin-bottom:22px}
+  .task-section-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+  .task-section-header h3{font-size:18px}
+  .cat-pill{font-size:11px;padding:2px 10px;border-radius:20px;font-weight:500}
+
+  .dot-btn{width:26px;height:26px;border-radius:50%;border:2px solid;cursor:pointer;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .15s;background:transparent}
+  .dot-btn.red{border-color:#e24b4a;color:#e24b4a}.dot-btn.red.active{background:#e24b4a;color:#fff}
+  .dot-btn.ora{border-color:#FF9800;color:#FF9800}.dot-btn.ora.active{background:#FF9800;color:#fff}
+  .dot-btn.grn{border-color:#4CAF50;color:#4CAF50}.dot-btn.grn.active{background:#4CAF50;color:#fff}
+  .del-btn{width:26px;height:26px;border-radius:50%;border:0.5px solid var(--border);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;background:transparent;color:var(--text3);transition:all .15s}
+  .del-btn:hover{background:var(--del-hover-bg,#2a1010);color:#e24b4a}
+
+  /* ADD FORM */
+  .add-form{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding:12px;background:var(--bg2);border-radius:10px;border:0.5px solid var(--border)}
+  .add-form input,.add-form select{flex:1;min-width:120px;height:34px;border:0.5px solid var(--border2);border-radius:8px;padding:0 10px;font-size:13px;background:var(--bg3);color:var(--text)}
+  .add-form input:focus,.add-form select:focus{outline:none;border-color:var(--red)}
+  .add-form button{height:34px;padding:0 16px;border-radius:8px;border:none;background:var(--red);color:#fff;font-size:13px;font-weight:500;cursor:pointer}
+  .add-form button:hover{background:var(--red2)}
+
+  /* RANK TABLE */
+  .rank-table{width:100%;border-collapse:collapse;font-size:13px}
+  .rank-table th{text-align:left;padding:8px 10px;font-weight:500;color:var(--text2);border-bottom:0.5px solid var(--border);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+  .rank-table td{padding:8px 10px;border-bottom:0.5px solid var(--border)}
+  .rank-table tr:last-child td{border-bottom:none}
+  .rank-name{padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500}
+
+  .week-nav{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .week-nav button{border:0.5px solid var(--border2);background:var(--bg2);border-radius:8px;padding:6px 14px;cursor:pointer;color:var(--text);font-size:13px;transition:all .15s}
+  .week-nav button:hover{border-color:var(--red);color:var(--red)}
+  .week-nav .week-label{font-size:14px;font-weight:500}
+
+  /* TASK GRID */
+  .task-table-wrap{overflow-x:auto;margin-bottom:4px}
+  .task-grid{width:100%;border-collapse:separate;border-spacing:0 3px;min-width:600px;table-layout:fixed}
+  .task-grid colgroup col.col-name{width:180px}
+  .task-grid colgroup col.col-day{width:64px}
+  .task-grid colgroup col.col-xp{width:72px}
+
+  /* Header row */
+  .task-grid thead th{padding:2px 3px;font-size:9px;color:var(--text3);font-weight:400;text-align:center;border:none;background:transparent;letter-spacing:.3px}
+  .task-grid thead th:first-child{text-align:left;padding-left:10px}
+  .task-grid thead th:last-child{text-align:right;padding-right:8px}
+
+  /* Body rows */
+  .task-grid tbody td{background:var(--bg2);border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);padding:0}
+  .task-grid tbody td:first-child{padding:7px 10px;font-size:13px;font-weight:500;border-left:0.5px solid var(--border);border-radius:8px 0 0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .task-grid tbody td:last-child{padding:7px 8px;text-align:right;border-right:0.5px solid var(--border);border-radius:0 8px 8px 0;font-size:13px;font-weight:500;white-space:nowrap}
+  .task-grid .day-cell{padding:4px 3px;text-align:center;vertical-align:middle}
+  .day-btns{display:flex;gap:2px;justify-content:center;align-items:center}
+
+  /* MANAGE TASK ROW */
+  .manage-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;margin-bottom:4px;background:var(--bg2);border:0.5px solid var(--border)}
+  .manage-row:hover{border-color:var(--border2)}
+  .manage-row .task-name{font-size:14px;font-weight:500}
+  .manage-row select{font-size:12px;padding:3px 6px;border-radius:6px;border:0.5px solid var(--border2);background:var(--bg3);color:var(--text)}
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar{width:5px;height:5px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+  select option{background:var(--bg3);color:var(--text)}
+
+  /* ── SETTINGS PANEL ── */
+  .settings-section{margin-bottom:28px}
+  .settings-section h3{font-size:16px;font-family:'DM Sans',sans-serif;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  .theme-toggle{display:flex;gap:10px}
+  .theme-btn{flex:1;padding:10px 16px;border-radius:10px;border:1.5px solid var(--border2);cursor:pointer;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;background:var(--bg2);color:var(--text2);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+  .theme-btn:hover{border-color:var(--red);color:var(--text)}
+  .theme-btn.active{border-color:var(--red);background:var(--red);color:#fff}
+  .palette-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .palette-btn{width:38px;height:38px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all .2s;outline:none;position:relative}
+  .palette-btn:hover{transform:scale(1.1)}
+  .palette-btn.active{border-color:var(--text);box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--text)}
+  .palette-btn.active::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+
+  /* CATEGORY MANAGEMENT */
+  .cat-manage-list{display:flex;flex-direction:column;gap:6px;margin-bottom:4px}
+  .cat-manage-row{display:grid;grid-template-columns:28px 1fr auto 60px;grid-template-rows:auto auto;align-items:center;gap:6px 8px;padding:10px 12px;border-radius:10px;background:var(--bg2);border:0.5px solid var(--border);transition:border-color .15s}
+  .cat-manage-row:hover{border-color:var(--border2)}
+  .cat-color-swatch{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid rgba(255,255,255,.15);transition:transform .15s;flex-shrink:0}
+  .cat-color-swatch:hover{transform:scale(1.15)}
+  .cat-name-display{font-size:14px;font-weight:500;color:var(--text)}
+  .cat-manage-actions{display:flex;gap:4px;align-items:center}
+  .cat-action-btn{width:28px;height:28px;border-radius:6px;border:0.5px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+  .cat-action-btn:hover{background:var(--border2);color:var(--text)}
+  .cat-del-btn:hover{background:var(--del-hover-bg,#2a1010)!important;color:#e24b4a!important;border-color:#e24b4a!important}
+  .cat-del-btn.disabled{opacity:.35;cursor:not-allowed}
+  .cat-del-btn.disabled:hover{background:var(--bg3)!important;color:var(--text2)!important;border-color:var(--border2)!important}
+  .cat-task-count{font-size:11px;color:var(--text3);text-align:right}
+  .cat-edit-inline{display:flex;gap:6px;align-items:center;grid-column:1/-1}
+
+  /* SUMMARY HORIZONTAL SCROLL (extra categories) */
+  .summary-scroll-wrap{overflow:hidden;position:relative;margin-bottom:20px}
+  .summary-scroll-wrap::after{content:'';position:absolute;right:0;top:0;bottom:0;width:40px;background:linear-gradient(to right,transparent,var(--bg));pointer-events:none}
+  .summary-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .summary-scroll::-webkit-scrollbar{display:none}
+  .scard-scroll{flex:0 0 160px;min-width:160px;text-align:center}
+  .scard-scroll .cat-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>LEVELIS</h1>
+  <div class="save-indicator">
+    <div class="save-dot saved" id="save-dot"></div>
+    <span id="save-label">Prêt</span>
+  </div>
+</div>
+
+<div class="app">
+  <div class="tabs">
+    <button class="tab active" data-tab="tracker" onclick="showTab('tracker',this)">Tracker</button>
+    <button class="tab" data-tab="scores" onclick="showTab('scores',this)">Scores & Rangs</button>
+    <button class="tab" data-tab="manage" onclick="showTab('manage',this)">Gérer les tâches</button>
+    <button class="tab" data-tab="settings" onclick="showTab('settings',this)">⚙ Settings</button>
+  </div>
+  <div id="tab-tracker" class="panel active"></div>
+  <div id="tab-scores" class="panel"></div>
+  <div id="tab-manage" class="panel"></div>
+  <div id="tab-settings" class="panel"></div>
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────
+let CATS = {
+  Physique:   {color:'#4CAF50', bg:'#1b2e1b', textCol:'#81C784'},
+  Spirituel:  {color:'#7986CB', bg:'#1a1c2e', textCol:'#9FA8DA'},
+  Discipline: {color:'#FF7043', bg:'#2e1a14', textCol:'#FF8A65'},
+  Travail:    {color:'#26C6DA', bg:'#0e2a2e', textCol:'#4DD0E1'},
+  Mental:     {color:'#EF5350', bg:'#2e1212', textCol:'#EF9A9A'}
+};
+const MIN_CATS = 5;
+
+// Derive bg/textCol from a hex color
+function deriveCatTheme(hex) {
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  const darken=(c,f)=>Math.round(c*f);
+  const bgR=darken(r,0.15)+Math.round((1-0.15)*17);
+  const bgG=darken(g,0.15)+Math.round((1-0.15)*17);
+  const bgB=darken(b,0.15)+Math.round((1-0.15)*17);
+  const clamp=v=>Math.max(0,Math.min(255,v));
+  const toHex=v=>clamp(v).toString(16).padStart(2,'0');
+  const lightR=clamp(r+80),lightG=clamp(g+80),lightB=clamp(b+80);
+  return {
+    color: hex,
+    bg: `#${toHex(bgR)}${toHex(bgG)}${toHex(bgB)}`,
+    textCol: `#${toHex(lightR)}${toHex(lightG)}${toHex(lightB)}`
+  };
+}
+const RANKS = [
+  {name:'Hors Jeu', cls:'r-hors'},
+  {name:'Bronze',   cls:'r-bronze'},
+  {name:'Argent',   cls:'r-argent'},
+  {name:'Or',       cls:'r-or'},
+  {name:'Platine',  cls:'r-platine'},
+  {name:'Diamant',  cls:'r-diamant'},
+  {name:'Immortal', cls:'r-immortal'}
+];
+const RANK_PCTS = [[0,0],[0.001,0.2],[0.2,0.4],[0.4,0.6],[0.6,0.8],[0.8,0.92],[0.92,1.001]];
+const DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+const STORAGE_KEY = 'xp-tracker-v1';
+
+// ── STATE ─────────────────────────────────────────────────
+let tasks = [
+  {id:1,name:'Musculation',cat:'Physique'},{id:2,name:'Créatine, complément',cat:'Physique'},
+  {id:3,name:'Minoxidil (matin et soir)',cat:'Physique'},{id:4,name:'Luc Léger Training',cat:'Physique'},
+  {id:5,name:'Manger ses apports journaliers',cat:'Physique'},{id:6,name:"2L d'eau",cat:'Physique'},
+  {id:7,name:'No junk Food',cat:'Physique'},
+  {id:8,name:'Temps de prière',cat:'Spirituel'},{id:9,name:'Gratitude (3 choses)',cat:'Spirituel'},
+  {id:10,name:"Pas d'insulte",cat:'Spirituel'},{id:11,name:'Cultivé sa Foi',cat:'Spirituel'},
+  {id:12,name:'Se lever tôt (8h)',cat:'Discipline'},{id:13,name:'No Porn',cat:'Discipline'},
+  {id:14,name:'No Juice solo',cat:'Discipline'},{id:15,name:'Ranger sa chambre',cat:'Discipline'},
+  {id:16,name:'Pas de procrastination volontaire',cat:'Discipline'},
+  {id:17,name:'Se brosser les dents',cat:'Discipline'},{id:18,name:'Se laver',cat:'Discipline'},
+  {id:19,name:'1h min travaux UGC',cat:'Travail'},{id:20,name:'Publier du contenu',cat:'Travail'},
+  {id:21,name:"30min min d'un Livre utile",cat:'Mental'},
+  {id:22,name:'Apprendre deux nouveaux mots',cat:'Mental'},
+  {id:23,name:'Regarder du contenu éducatif',cat:'Mental'}
+];
+let scores = {};
+let nextId = 24;
+let currentWeek = getWeekKey(new Date());
+let saveTimer = null;
+
+// ── PERSISTENCE ───────────────────────────────────────────
+function save() {
+  setSaveStatus('saving');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({tasks, scores, nextId, cats: CATS}));
+      setSaveStatus('saved');
+    } catch(e) {
+      setSaveStatus('error');
+    }
+  }, 500);
+}
+
+function loadSaved() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.tasks)  tasks  = d.tasks;
+    if (d.scores) scores = d.scores;
+    if (d.nextId) nextId = d.nextId;
+    if (d.cats)   CATS   = d.cats;
+  } catch(e) {}
+}
+
+function setSaveStatus(state) {
+  const dot = document.getElementById('save-dot');
+  const lbl = document.getElementById('save-label');
+  dot.className = 'save-dot';
+  if (state === 'saved')  { dot.classList.add('saved');  lbl.textContent = 'Sauvegardé'; }
+  if (state === 'saving') { dot.classList.add('saving'); lbl.textContent = 'Sauvegarde…'; }
+  if (state === 'error')  { lbl.textContent = 'Erreur sauvegarde'; }
+}
+
+// ── DATES ─────────────────────────────────────────────────
+// Parser "YYYY-MM-DD" en date LOCALE (new Date("YYYY-MM-DD") parse en UTC → décalage)
+function parseLocal(k){const[y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)}
+function toKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function getWeekKey(d){
+  const t=new Date(d);t.setHours(0,0,0,0);
+  t.setDate(t.getDate()-((t.getDay()+6)%7));
+  return toKey(t);
+}
+function weekLabel(k){
+  const d=parseLocal(k),e=new Date(d);e.setDate(e.getDate()+6);
+  return d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})+' – '+
+         e.toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'});
+}
+function prevWeek(k){const d=parseLocal(k);d.setDate(d.getDate()-7);return toKey(d)}
+function nextWeek(k){const d=parseLocal(k);d.setDate(d.getDate()+7);return toKey(d)}
+
+// ── XP / RANK ─────────────────────────────────────────────
+function getScore(wk,id,day){return (scores[wk]||{})[id+'-'+day]||0}
+function setScore(wk,id,day,val){if(!scores[wk])scores[wk]={};scores[wk][id+'-'+day]=val}
+function catXP(wk,cat){return tasks.filter(t=>t.cat===cat).reduce((s,t)=>s+DAYS.reduce((a,d)=>a+getScore(wk,t.id,d),0),0)}
+function catMax(cat){return tasks.filter(t=>t.cat===cat).length*7}
+function totalXP(wk){return Object.keys(CATS).reduce((s,c)=>s+catXP(wk,c),0)}
+function totalMax(){return Object.keys(CATS).reduce((s,c)=>s+catMax(c),0)}
+function getRank(xp,max){
+  if(!max)return 0;
+  const p=xp/max;
+  for(let i=RANK_PCTS.length-1;i>=0;i--)if(p>=RANK_PCTS[i][0])return i;
+  return 0;
+}
+function getRankThresholds(max){return RANK_PCTS.map(([lo,hi])=>[Math.ceil(lo*max),Math.floor(hi*max)])}
+
+// ── CAT PILL COLORS (theme-aware) ────────────────────────
+function catPillStyle(cat) {
+  const isLight = document.body.classList.contains('mode-light');
+  if (!isLight) {
+    return `background:${CATS[cat].bg};color:${CATS[cat].textCol}`;
+  }
+  const key = cat.toLowerCase();
+  const bg  = getComputedStyle(document.body).getPropertyValue(`--cat-${key}-bg`).trim();
+  const col = getComputedStyle(document.body).getPropertyValue(`--cat-${key}-text`).trim();
+  // Fallback for custom categories without CSS vars
+  if (!bg) {
+    const c = CATS[cat];
+    return `background:${c.bg};color:${c.textCol}`;
+  }
+  return `background:${bg};color:${col}`;
+}
+function renderTracker() {
+  const wk=currentWeek;
+  const tXP=totalXP(wk), tMax=totalMax();
+  const tRank=RANKS[getRank(tXP,tMax)];
+  const tPct=tMax?Math.round(tXP/tMax*100):0;
+
+  let h = `
+  <div class="week-nav">
+    <button onclick="changeWeek(-1)">&#8592; Préc.</button>
+    <span class="week-label">${weekLabel(wk)}</span>
+    <button onclick="changeWeek(1)">Suiv. &#8594;</button>
+  </div>
+  <div class="hero">
+    <div>
+      <div class="label">XP Total</div>
+      <div class="hero-xp">${tXP.toFixed(1)}</div>
+      <span class="hero-badge ${tRank.cls}">${tRank.name}</span>
+    </div>
+    <div class="hero-right">
+      <div class="label">sur ${tMax} XP max</div>
+      <div class="hero-pct">${tPct}% accompli</div>
+    </div>
+  </div>
+  `;
+
+  const catKeys = Object.keys(CATS);
+  const firstCats = catKeys.slice(0, 5);
+  const extraCats = catKeys.slice(5);
+
+  // First 5 categories: normal grid
+  h += '<div class="summary-grid">';
+  firstCats.forEach(cat => {
+    const xp=catXP(wk,cat), max=catMax(cat);
+    const rank=RANKS[getRank(xp,max)];
+    const pct=max?Math.round(xp/max*100):0;
+    const c=CATS[cat];
+    h+=`<div class="scard">
+      <div class="cat-label"><span class="cat-dot" style="background:${c.color}"></span>${cat}</div>
+      <div class="xp-val" style="color:${c.color}">${xp.toFixed(1)}</div>
+      <div class="xp-max">/ ${max} XP</div>
+      <div class="prog-wrap"><div class="prog-bar" style="width:${pct}%;background:${c.color}"></div></div>
+      <span class="rank-badge ${rank.cls}">${rank.name}</span>
+    </div>`;
+  });
+  h += '</div>';
+
+  // Extra categories: horizontal scroll strip
+  if (extraCats.length > 0) {
+    h += '<div class="summary-scroll-wrap"><div class="summary-scroll">';
+    extraCats.forEach(cat => {
+      const xp=catXP(wk,cat), max=catMax(cat);
+      const rank=RANKS[getRank(xp,max)];
+      const pct=max?Math.round(xp/max*100):0;
+      const c=CATS[cat];
+      h+=`<div class="scard scard-scroll">
+        <div class="cat-label"><span class="cat-dot" style="background:${c.color}"></span>${cat}</div>
+        <div class="xp-val" style="color:${c.color}">${xp.toFixed(1)}</div>
+        <div class="xp-max">/ ${max} XP</div>
+        <div class="prog-wrap"><div class="prog-bar" style="width:${pct}%;background:${c.color}"></div></div>
+        <span class="rank-badge ${rank.cls}">${rank.name}</span>
+      </div>`;
+    });
+    h += '</div></div>';
+  }
+
+  Object.keys(CATS).forEach(cat => {
+    const catTasks=tasks.filter(t=>t.cat===cat);
+    if(!catTasks.length)return;
+    const c=CATS[cat];
+    h+=`<div class="task-section">
+      <div class="task-section-header">
+        <h3 style="color:${c.color}">${cat}</h3>
+        <span class="cat-pill" style="${catPillStyle(cat)}">${catTasks.length} tâches · ${catXP(wk,cat).toFixed(1)} / ${catMax(cat)} XP</span>
+      </div>
+      <div class="task-table-wrap"><table class="task-grid">
+        <colgroup>
+          <col class="col-name"/>
+          ${DAYS.map(()=>'<col class="col-day"/>').join('')}
+          <col class="col-xp"/>
+        </colgroup>
+        <thead><tr>
+          <th></th>
+          ${DAYS.map(d=>`<th>${d.slice(0,3)}</th>`).join('')}
+          <th>XP</th>
+        </tr></thead>
+        <tbody>`;
+    catTasks.forEach(t => {
+      h+=`<tr><td style="color:${c.color}">${t.name}</td>`;
+      DAYS.forEach(day => {
+        const sc=getScore(wk,t.id,day);
+        h+=`<td class="day-cell"><div class="day-btns">`;
+        [[0,'red','✕'],[0.5,'ora','½'],[1,'grn','✓']].forEach(([v,cls,lbl])=>{
+          h+=`<button class="dot-btn ${cls}${sc===v?' active':''}" onclick="toggleScore('${wk}',${t.id},'${day}',${v})">${lbl}</button>`;
+        });
+        h+=`</div></td>`;
+      });
+      const rowXP=DAYS.reduce((s,d)=>s+getScore(wk,t.id,d),0);
+      h+=`<td style="color:${c.color}">${rowXP.toFixed(1)} XP</td></tr>`;
+    });
+    h+=`</tbody></table></div></div>`;
+  });
+
+  document.getElementById('tab-tracker').innerHTML = h;
+}
+
+// ── RENDER SCORES ─────────────────────────────────────────
+function renderScores() {
+  const wk=currentWeek;
+  let h=`<h2 style="font-size:22px;margin-bottom:16px">Tableau des rangs</h2>
+  <table class="rank-table"><thead><tr><th>Catégorie</th><th>XP</th><th>Max</th>`;
+  RANKS.forEach(r=>h+=`<th><span class="rank-name ${r.cls}">${r.name}</span></th>`);
+  h+='</tr></thead><tbody>';
+
+  Object.keys(CATS).forEach(cat=>{
+    const xp=catXP(wk,cat), max=catMax(cat);
+    const thresh=getRankThresholds(max);
+    const ridx=getRank(xp,max);
+    const c=CATS[cat];
+    h+=`<tr><td><span style="background:${c.color};display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px"></span><b>${cat}</b></td>
+      <td style="color:${c.color};font-weight:500">${xp.toFixed(1)}</td><td style="color:var(--text2)">${max}</td>`;
+    thresh.forEach(([lo,hi],i)=>{
+      const cur=i===ridx;
+      h+=`<td style="text-align:center;${cur?'font-weight:700;color:'+c.color:''}">${i===0?'0':`${lo}–${hi}`}</td>`;
+    });
+    h+='</tr>';
+  });
+
+  const tXP=totalXP(wk), tMax=totalMax();
+  const tThresh=getRankThresholds(tMax);
+  const tRidx=getRank(tXP,tMax);
+  h+=`<tr style="border-top:2px solid var(--border2)">
+    <td><b>TOTAL</b></td><td style="font-weight:500">${tXP.toFixed(1)}</td><td style="color:var(--text2)">${tMax}</td>`;
+  tThresh.forEach(([lo,hi],i)=>{
+    h+=`<td style="text-align:center;${i===tRidx?'font-weight:700;color:var(--red)':''}">${i===0?'0':`${lo}–${hi}`}</td>`;
+  });
+  h+='</tr></tbody></table>';
+  h+=`<p style="margin-top:14px;font-size:12px;color:var(--text3)">Les seuils se recalculent automatiquement selon le nombre de tâches actives.</p>`;
+  document.getElementById('tab-scores').innerHTML = h;
+}
+
+// ── RENDER MANAGE (ex-settings) ───────────────────────────
+function renderManage() {
+  const catKeys = Object.keys(CATS);
+  const canDelete = catKeys.length > MIN_CATS;
+
+  let h = '<h2 style="font-size:22px;margin-bottom:16px">Gérer les tâches</h2>';
+
+  // ── Section: Catégories ──────────────────────────────────
+  h += `<div class="settings-section" style="margin-bottom:24px">
+    <h3 style="font-size:16px;font-family:'DM Sans',sans-serif;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+      <span>Catégories</span>
+      <button onclick="addCategory()" style="font-size:12px;padding:4px 12px;border-radius:6px;border:none;background:var(--red);color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500">+ Nouvelle</button>
+    </h3>
+    <div class="cat-manage-list">`;
+
+  catKeys.forEach((cat, idx) => {
+    const c = CATS[cat];
+    const taskCount = tasks.filter(t=>t.cat===cat).length;
+    const delDisabled = !canDelete;
+    const isMin = idx < MIN_CATS;
+    h += `<div class="cat-manage-row" id="cmr-${idx}">
+      <div class="cat-color-swatch" style="background:${c.color}" onclick="openColorPicker('${cat}','${c.color}',${idx})"></div>
+      <div class="cat-name-display" id="cname-${idx}">${cat}</div>
+      <div class="cat-manage-actions">
+        <button class="cat-action-btn" onclick="startEditCat('${cat}',${idx})" title="Renommer">✏️</button>
+        <button class="cat-action-btn" onclick="openColorPicker('${cat}','${c.color}',${idx})" title="Couleur">🎨</button>
+        <button class="cat-action-btn cat-del-btn${delDisabled?' disabled':''}" onclick="${delDisabled?'showMinCatsWarn()':'deleteCat(\''+cat+'\')'}" title="${delDisabled?'Minimum '+MIN_CATS+' catégories':'Supprimer'}">✕</button>
+      </div>
+      <div class="cat-task-count">${taskCount} tâche${taskCount!==1?'s':''}</div>
+      <div class="cat-edit-inline" id="cedit-${idx}" style="display:none">
+        <input id="cedit-input-${idx}" type="text" value="${cat}" onkeydown="if(event.key==='Enter')confirmEditCat('${cat}',${idx});else if(event.key==='Escape')cancelEditCat(${idx})" style="flex:1;height:28px;border:1px solid var(--border2);border-radius:6px;padding:0 8px;font-size:13px;background:var(--bg3);color:var(--text)"/>
+        <button onclick="confirmEditCat('${cat}',${idx})" style="height:28px;padding:0 10px;border-radius:6px;border:none;background:var(--red);color:#fff;font-size:12px;cursor:pointer">OK</button>
+        <button onclick="cancelEditCat(${idx})" style="height:28px;padding:0 10px;border-radius:6px;border:0.5px solid var(--border2);background:var(--bg3);color:var(--text);font-size:12px;cursor:pointer">✕</button>
+      </div>
+    </div>`;
+  });
+
+  // Color picker popup (hidden, revealed via JS)
+  h += `</div>
+    <div id="color-picker-popup" style="display:none;margin-top:12px;padding:14px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;">
+      <div style="font-size:13px;font-weight:500;margin-bottom:10px;color:var(--text2)">Choisir une couleur pour <b id="color-picker-cat-name" style="color:var(--text)"></b></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px" id="color-preset-row"></div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <label style="font-size:12px;color:var(--text2)">Personnalisée :</label>
+        <input type="color" id="color-picker-custom" style="width:36px;height:28px;border:none;background:none;cursor:pointer;padding:0"/>
+        <div id="color-preview" style="width:36px;height:28px;border-radius:6px;border:1px solid var(--border2)"></div>
+        <button onclick="applyColor()" style="height:28px;padding:0 12px;border-radius:6px;border:none;background:var(--red);color:#fff;font-size:12px;cursor:pointer">Appliquer</button>
+        <button onclick="closeColorPicker()" style="height:28px;padding:0 10px;border-radius:6px;border:0.5px solid var(--border2);background:var(--bg3);color:var(--text);font-size:12px;cursor:pointer">Annuler</button>
+      </div>
+    </div>
+  </div>`;
+
+  // ── Section: Tâches par catégorie ──────────────────────
+  catKeys.forEach(cat=>{
+    const catTasks=tasks.filter(t=>t.cat===cat);
+    const c=CATS[cat];
+    h+=`<div class="task-section">
+      <div class="task-section-header">
+        <h3 style="color:${c.color}">${cat}</h3>
+        <span class="cat-pill" style="${catPillStyle(cat)}">${catTasks.length} tâches · max ${catMax(cat)} XP/sem</span>
+      </div>`;
+    catTasks.forEach(t=>{
+      h+=`<div class="manage-row">
+        <div class="task-name">${t.name}</div>
+        <select onchange="changeTaskCat(${t.id},this.value)">
+          ${Object.keys(CATS).map(c2=>`<option${c2===t.cat?' selected':''}>${c2}</option>`).join('')}
+        </select>
+        <button class="del-btn" onclick="deleteTask(${t.id})" title="Supprimer">✕</button>
+      </div>`;
+    });
+    h+='</div>';
+  });
+
+  h+=`<div style="margin-top:4px">
+    <h3 style="font-size:18px;margin-bottom:10px">Ajouter une tâche</h3>
+    <div class="add-form">
+      <input id="new-task-name" type="text" placeholder="Nom de la tâche…" onkeydown="if(event.key==='Enter')addTask()"/>
+      <select id="new-task-cat">${Object.keys(CATS).map(c=>`<option>${c}</option>`).join('')}</select>
+      <button onclick="addTask()">+ Ajouter</button>
+    </div>
+  </div>`;
+
+  document.getElementById('tab-manage').innerHTML = h;
+
+  // Init color picker custom input live preview
+  const cpInput = document.getElementById('color-picker-custom');
+  if (cpInput) {
+    cpInput.addEventListener('input', () => {
+      const prev = document.getElementById('color-preview');
+      if (prev) prev.style.background = cpInput.value;
+    });
+  }
+}
+
+// ── RENDER SETTINGS (thème) ───────────────────────────────
+const ACCENT_COLORS = {
+  none:   null,
+  rose:   'hsl(345,60%,68%)',
+  blue:   'hsl(211,60%,64%)',
+  yellow: 'hsl(46,70%,62%)',
+  violet: 'hsl(262,55%,66%)',
+  green:  'hsl(152,48%,58%)',
+};
+
+function applyTheme() {
+  const body = document.body;
+  // Reset all theme classes
+  body.classList.remove('mode-light');
+  ['rose','blue','yellow','violet','green'].forEach(a => body.classList.remove('accent-'+a));
+
+  if (currentMode === 'light') body.classList.add('mode-light');
+  if (currentAccent !== 'none') body.classList.add('accent-'+currentAccent);
+
+  try { localStorage.setItem('xp-mode', currentMode); } catch(e){}
+  try { localStorage.setItem('xp-accent', currentAccent); } catch(e){}
+  renderThemeSettings();
+  renderAll();
+}
+
+function renderThemeSettings() {
+  const accents = ['none','rose','blue','yellow','violet','green'];
+  const accentLabels = {none:'Aucune',rose:'Rose',blue:'Bleu',yellow:'Jaune',violet:'Violet',green:'Vert'};
+
+  let h = `<h2 style="font-size:22px;margin-bottom:20px">Apparence</h2>`;
+
+  // Mode sombre / clair
+  h += `<div class="settings-section">
+    <h3>Mode</h3>
+    <div class="theme-toggle">
+      <button class="theme-btn${currentMode==='dark'?' active':''}" onclick="currentMode='dark';applyTheme()">🌙 Sombre</button>
+      <button class="theme-btn${currentMode==='light'?' active':''}" onclick="currentMode='light';applyTheme()">☀️ Clair</button>
+    </div>
+  </div>`;
+
+  // Couleur accent
+  h += `<div class="settings-section">
+    <h3>Couleur accent</h3>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:12px">
+      ${currentMode==='dark'
+        ? 'Mode sombre : remplace la couleur dominante rouge'
+        : 'Mode clair : applique un fond pastel coloré'}
+    </p>
+    <div class="palette-row">`;
+
+  accents.forEach(id => {
+    const col = ACCENT_COLORS[id];
+    const isActive = currentAccent === id;
+    if (id === 'none') {
+      // Bouton "Aucune" : cercle barré
+      h += `<button class="palette-btn${isActive?' active':''}" onclick="currentAccent='none';applyTheme()"
+        style="background:var(--bg3);border-color:var(--border2);font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text3);"
+        title="${accentLabels[id]}">✕</button>`;
+    } else {
+      h += `<button class="palette-btn${isActive?' active':''}" onclick="currentAccent='${id}';applyTheme()"
+        style="background:${col}" title="${accentLabels[id]}"></button>`;
+    }
+  });
+
+  h += `</div></div>`;
+  document.getElementById('tab-settings').innerHTML = h;
+}
+
+// ── CATEGORY MANAGEMENT ──────────────────────────────────
+let _editingCat = null; // {oldName, idx}
+let _colorPickerCat = null;
+
+const CAT_PRESETS = ['#4CAF50','#7986CB','#FF7043','#26C6DA','#EF5350','#FFC107','#E91E63','#9C27B0','#00BCD4','#FF5722','#8BC34A','#3F51B5','#F06292','#4DB6AC','#FFB300'];
+
+function startEditCat(catName, idx) {
+  _editingCat = {oldName: catName, idx};
+  const display = document.getElementById('cname-'+idx);
+  const edit = document.getElementById('cedit-'+idx);
+  if (display) display.style.display = 'none';
+  if (edit) { edit.style.display = 'flex'; const inp = document.getElementById('cedit-input-'+idx); if(inp){inp.focus();inp.select();} }
+}
+
+function cancelEditCat(idx) {
+  _editingCat = null;
+  const display = document.getElementById('cname-'+idx);
+  const edit = document.getElementById('cedit-'+idx);
+  if (display) display.style.display = '';
+  if (edit) edit.style.display = 'none';
+}
+
+function confirmEditCat(oldName, idx) {
+  const inp = document.getElementById('cedit-input-'+idx);
+  const newName = inp ? inp.value.trim() : '';
+  if (!newName || newName === oldName) { cancelEditCat(idx); return; }
+  if (CATS[newName]) { alert('Une catégorie avec ce nom existe déjà.'); return; }
+  // Rebuild CATS with new key at same position
+  const newCATS = {};
+  Object.keys(CATS).forEach(k => { newCATS[k === oldName ? newName : k] = CATS[k]; });
+  CATS = newCATS;
+  // Update tasks
+  tasks.forEach(t => { if (t.cat === oldName) t.cat = newName; });
+  _editingCat = null;
+  save(); renderManage();
+}
+
+function deleteCat(catName) {
+  if (Object.keys(CATS).length <= MIN_CATS) { showMinCatsWarn(); return; }
+  const taskCount = tasks.filter(t=>t.cat===catName).length;
+  if (taskCount > 0) {
+    if (!confirm(`La catégorie "${catName}" contient ${taskCount} tâche${taskCount>1?'s':''}. Les supprimer aussi ?`)) return;
+    tasks = tasks.filter(t=>t.cat!==catName);
+  }
+  delete CATS[catName];
+  save(); renderAll();
+}
+
+function showMinCatsWarn() {
+  // Brief shake / flash on the list
+  const list = document.querySelector('.cat-manage-list');
+  if (list) { list.style.outline = '2px solid var(--red)'; setTimeout(()=>list.style.outline='',600); }
+  // Small toast
+  showToast(`Minimum ${MIN_CATS} catégories requis`);
+}
+
+function showToast(msg) {
+  let t = document.getElementById('xp-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'xp-toast';
+    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;z-index:9999;pointer-events:none;transition:opacity .3s';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._hide);
+  t._hide = setTimeout(() => { t.style.opacity = '0'; }, 2200);
+}
+
+function addCategory() {
+  const name = prompt('Nom de la nouvelle catégorie :');
+  if (!name || !name.trim()) return;
+  const n = name.trim();
+  if (CATS[n]) { alert('Cette catégorie existe déjà.'); return; }
+  const defaultColors = ['#9C27B0','#FFC107','#E91E63','#00BCD4','#FF5722','#8BC34A'];
+  const usedColors = Object.values(CATS).map(c=>c.color);
+  const col = defaultColors.find(c=>!usedColors.includes(c)) || '#9E9E9E';
+  CATS[n] = deriveCatTheme(col);
+  save(); renderManage();
+}
+
+function openColorPicker(catName, currentColor, idx) {
+  _colorPickerCat = catName;
+  const popup = document.getElementById('color-picker-popup');
+  if (!popup) return;
+  document.getElementById('color-picker-cat-name').textContent = catName;
+  // Build preset swatches
+  const row = document.getElementById('color-preset-row');
+  row.innerHTML = CAT_PRESETS.map(col => `<button onclick="selectPresetColor('${col}')" style="width:28px;height:28px;border-radius:50%;background:${col};border:${col===currentColor?'3px solid var(--text)':'2px solid transparent'};cursor:pointer;transition:transform .15s" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform=''"></button>`).join('');
+  // Init custom picker
+  const inp = document.getElementById('color-picker-custom');
+  inp.value = currentColor;
+  document.getElementById('color-preview').style.background = currentColor;
+  popup.style.display = 'block';
+  popup.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function selectPresetColor(col) {
+  const inp = document.getElementById('color-picker-custom');
+  inp.value = col;
+  document.getElementById('color-preview').style.background = col;
+}
+
+function applyColor() {
+  if (!_colorPickerCat) return;
+  const col = document.getElementById('color-picker-custom').value;
+  CATS[_colorPickerCat] = deriveCatTheme(col);
+  closeColorPicker();
+  save(); renderManage();
+}
+
+function closeColorPicker() {
+  _colorPickerCat = null;
+  const popup = document.getElementById('color-picker-popup');
+  if (popup) popup.style.display = 'none';
+}
+
+// ── ACTIONS ───────────────────────────────────────────────
+function toggleScore(wk,id,day,val){
+  const cur=getScore(wk,id,day);
+  setScore(wk,id,day,cur===val?0:val);
+  save(); renderAll();
+}
+function deleteTask(id){
+  tasks=tasks.filter(t=>t.id!==id);
+  save(); renderAll();
+}
+function addTask(){
+  const n=document.getElementById('new-task-name');
+  const c=document.getElementById('new-task-cat');
+  const name=n?n.value.trim():'';
+  if(!name)return;
+  tasks.push({id:nextId++,name,cat:c?c.value:'Physique'});
+  save(); renderAll();
+}
+function changeTaskCat(id,cat){
+  const t=tasks.find(t=>t.id===id);
+  if(t)t.cat=cat;
+  save(); renderAll();
+}
+function changeWeek(dir){
+  currentWeek=dir<0?prevWeek(currentWeek):nextWeek(currentWeek);
+  renderAll();
+}
+function showTab(tab,btn){
+  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(el=>el.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+  if(tab==='tracker')renderTracker();
+  else if(tab==='scores')renderScores();
+  else if(tab==='manage')renderManage();
+  else if(tab==='settings')renderThemeSettings();
+}
+function renderAll(){
+  const tab=(document.querySelector('.tab.active')||{}).dataset?.tab||'tracker';
+  if(tab==='tracker')renderTracker();
+  else if(tab==='scores')renderScores();
+  else if(tab==='manage')renderManage();
+  else if(tab==='settings')renderThemeSettings();
+}
+
+// ── INIT ──────────────────────────────────────────────────
+let currentMode   = 'dark';
+let currentAccent = 'none';
+try {
+  currentMode   = localStorage.getItem('xp-mode')   || 'dark';
+  currentAccent = localStorage.getItem('xp-accent') || 'none';
+  const body = document.body;
+  if (currentMode === 'light') body.classList.add('mode-light');
+  if (currentAccent !== 'none') body.classList.add('accent-'+currentAccent);
+} catch(e){}
+loadSaved();
+renderTracker();
+</script>
+</body>
+</html>
