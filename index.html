@@ -296,7 +296,7 @@
     /* Navigation fixe en bas */
     .tabs {
       position:fixed; bottom:0; left:0; right:0;
-      display:grid; grid-template-columns:repeat(4,1fr);
+      display:grid; grid-template-columns:repeat(5,1fr);
       gap:0; margin-bottom:0; border-bottom:none;
       border-top:1px solid var(--border2);
       background:var(--bg2); z-index:200;
@@ -387,9 +387,97 @@
     .dot-btn { width:26px; height:26px; font-size:11px }
     .m-day-label { font-size:7px }
   }
+
+  /* ── AUTH OVERLAY ── */
+  #auth-overlay {
+    position:fixed;inset:0;background:var(--bg);z-index:1000;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'DM Sans',sans-serif;
+  }
+  .auth-box {
+    background:var(--bg2);border:1px solid var(--border2);border-radius:16px;
+    padding:36px 32px;width:100%;max-width:380px;margin:16px;
+    display:flex;flex-direction:column;gap:16px;
+  }
+  .auth-logo { font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--red);letter-spacing:2px;text-align:center }
+  .auth-subtitle { text-align:center;color:var(--text2);font-size:13px;margin-top:-8px }
+  .auth-tabs { display:flex;gap:0;border:1px solid var(--border2);border-radius:8px;overflow:hidden }
+  .auth-tab { flex:1;padding:8px;font-size:13px;font-weight:600;background:none;border:none;color:var(--text2);cursor:pointer;transition:all .15s }
+  .auth-tab.active { background:var(--red);color:#fff }
+  .auth-input {
+    width:100%;padding:10px 14px;border-radius:8px;border:1px solid var(--border2);
+    background:var(--bg3);color:var(--text);font-size:14px;outline:none;
+    transition:border-color .15s;
+  }
+  .auth-input:focus { border-color:var(--red) }
+  .auth-btn {
+    width:100%;padding:12px;border-radius:8px;border:none;font-size:14px;
+    font-weight:600;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;
+  }
+  .auth-btn-primary { background:var(--red);color:#fff }
+  .auth-btn-primary:hover { opacity:.88 }
+  .auth-btn-google {
+    background:var(--bg3);color:var(--text);border:1px solid var(--border2);
+    display:flex;align-items:center;justify-content:center;gap:10px;
+  }
+  .auth-btn-google:hover { border-color:var(--red) }
+  .auth-divider { display:flex;align-items:center;gap:10px;color:var(--text3);font-size:12px }
+  .auth-divider::before,.auth-divider::after { content:'';flex:1;height:1px;background:var(--border2) }
+  .auth-error { color:#e24b4a;font-size:12px;text-align:center;min-height:16px }
+  .auth-loading { text-align:center;color:var(--text2);font-size:13px;padding:20px 0 }
+
+  /* ── PROFILE TAB ── */
+  .profile-avatar-wrap { display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:8px }
+  .profile-avatar {
+    width:90px;height:90px;border-radius:50%;object-fit:cover;
+    border:3px solid var(--red);cursor:pointer;background:var(--bg3);
+    display:flex;align-items:center;justify-content:center;font-size:36px;
+    overflow:hidden;
+  }
+  .profile-avatar img { width:100%;height:100%;object-fit:cover;border-radius:50% }
+  .profile-name { font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px }
+  .profile-email { font-size:13px;color:var(--text2) }
+  .profile-section { background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px }
+  .profile-section h4 { font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px }
+  .profile-row { display:flex;align-items:center;justify-content:space-between;padding:6px 0;font-size:13px }
+  .profile-row:not(:last-child) { border-bottom:1px solid var(--border) }
+  .profile-row label { color:var(--text2) }
+  .profile-edit-row { display:flex;gap:8px;margin-top:8px }
+  .profile-edit-row input { flex:1;padding:8px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-size:13px;outline:none }
+  .profile-edit-row input:focus { border-color:var(--red) }
+  .profile-edit-row button { padding:8px 14px;border-radius:8px;border:none;background:var(--red);color:#fff;font-size:12px;font-weight:600;cursor:pointer }
+  .profile-provider-badge { font-size:11px;padding:3px 8px;border-radius:20px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2) }
+  .profile-signout { width:100%;padding:12px;border-radius:10px;border:1px solid #e24b4a;background:transparent;color:#e24b4a;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px;transition:all .15s;font-family:'DM Sans',sans-serif }
+  .profile-signout:hover { background:#e24b4a;color:#fff }
+  .sync-badge { font-size:11px;padding:2px 8px;border-radius:20px;background:#1b2e1b;color:#81C784;border:1px solid #2d4a2d }
 </style>
 </head>
 <body>
+
+<!-- ── AUTH OVERLAY ── -->
+<div id="auth-overlay">
+  <div class="auth-box">
+    <div class="auth-logo">LEVELIS</div>
+    <div class="auth-subtitle">Connecte-toi pour sauvegarder ta progression</div>
+    <div id="auth-loading" class="auth-loading">Chargement…</div>
+    <div id="auth-forms" style="display:none;flex-direction:column;gap:14px">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuthTab('login')">Connexion</button>
+        <button class="auth-tab" onclick="switchAuthTab('register')">Inscription</button>
+      </div>
+      <button class="auth-btn auth-btn-google" onclick="signInGoogle()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Continuer avec Google
+      </button>
+      <div class="auth-divider">ou</div>
+      <input class="auth-input" id="auth-email" type="email" placeholder="Adresse e-mail"/>
+      <input class="auth-input" id="auth-password" type="password" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')authSubmit()"/>
+      <input class="auth-input" id="auth-pseudo" type="text" placeholder="Pseudonyme (optionnel)" style="display:none"/>
+      <div class="auth-error" id="auth-error"></div>
+      <button class="auth-btn auth-btn-primary" id="auth-submit-btn" onclick="authSubmit()">Se connecter</button>
+    </div>
+  </div>
+</div>
 
 <div class="header">
   <h1>LEVELIS</h1>
@@ -413,13 +501,20 @@
     <button class="tab" data-tab="settings" onclick="showTab('settings',this)">
       <span class="tab-icon">⚙️</span><span class="tab-full">⚙ Settings</span><span class="tab-short">Réglages</span>
     </button>
+    <button class="tab" data-tab="profile" onclick="showTab('profile',this)">
+      <span class="tab-icon">👤</span><span class="tab-full">Profil</span><span class="tab-short">Profil</span>
+    </button>
   </div>
   <div id="tab-tracker" class="panel active"></div>
   <div id="tab-scores" class="panel"></div>
   <div id="tab-manage" class="panel"></div>
   <div id="tab-settings" class="panel"></div>
+  <div id="tab-profile" class="panel"></div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
 // ── CONFIG ────────────────────────────────────────────────
 let CATS = {
@@ -480,23 +575,50 @@ let tasks = [
 let scores = {};
 let nextId = 24;
 let currentWeek = getWeekKey(new Date());
-let saveTimer = null;
 
 // ── PERSISTENCE ───────────────────────────────────────────
+let cloudSaveTimer = null;
+let currentUser = null;
+let userProfile = {};
+
 function save() {
   setSaveStatus('saving');
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({tasks, scores, nextId, cats: CATS}));
+  clearTimeout(cloudSaveTimer);
+  cloudSaveTimer = setTimeout(async () => {
+    // Always save locally as fallback
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({tasks, scores, nextId, cats: CATS})); } catch(e){}
+    // Save to Firestore if logged in
+    if (currentUser) {
+      try {
+        await firestore.collection('users').doc(currentUser.uid).set({
+          tasks, scores, nextId, cats: CATS,
+          updatedAt: new Date().toISOString()
+        }, { merge: true });
+        setSaveStatus('saved');
+      } catch(e) { setSaveStatus('error'); }
+    } else {
       setSaveStatus('saved');
-    } catch(e) {
-      setSaveStatus('error');
     }
-  }, 500);
+  }, 800);
 }
 
-function loadSaved() {
+async function loadFromCloud(uid) {
+  try {
+    const doc = await firestore.collection('users').doc(uid).get();
+    if (doc.exists) {
+      const d = doc.data();
+      if (d.tasks)  tasks  = d.tasks;
+      if (d.scores) scores = d.scores;
+      if (d.nextId) nextId = d.nextId;
+      if (d.cats)   CATS   = d.cats;
+    }
+  } catch(e) {
+    // Fallback to localStorage
+    loadSavedLocal();
+  }
+}
+
+function loadSavedLocal() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
@@ -511,10 +633,179 @@ function loadSaved() {
 function setSaveStatus(state) {
   const dot = document.getElementById('save-dot');
   const lbl = document.getElementById('save-label');
+  if (!dot || !lbl) return;
   dot.className = 'save-dot';
-  if (state === 'saved')  { dot.classList.add('saved');  lbl.textContent = 'Sauvegardé'; }
+  if (state === 'saved')  { dot.classList.add('saved');  lbl.textContent = currentUser ? '☁ Synchronisé' : 'Sauvegardé'; }
   if (state === 'saving') { dot.classList.add('saving'); lbl.textContent = 'Sauvegarde…'; }
   if (state === 'error')  { lbl.textContent = 'Erreur sauvegarde'; }
+}
+
+// ── AUTH UI ───────────────────────────────────────────────
+let authMode = 'login';
+
+function switchAuthTab(mode) {
+  authMode = mode;
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&mode==='login')||(i===1&&mode==='register')));
+  const pseudo = document.getElementById('auth-pseudo');
+  const btn = document.getElementById('auth-submit-btn');
+  const pw = document.getElementById('auth-password');
+  if (pseudo) pseudo.style.display = mode === 'register' ? 'block' : 'none';
+  if (btn) btn.textContent = mode === 'register' ? "S'inscrire" : 'Se connecter';
+  if (pw) pw.placeholder = mode === 'register' ? 'Mot de passe (6 caractères min)' : 'Mot de passe';
+  setAuthError('');
+}
+
+function setAuthError(msg) {
+  const el = document.getElementById('auth-error');
+  if (el) el.textContent = msg;
+}
+
+async function signInGoogle() {
+  setAuthError('');
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await firebase.auth().signInWithPopup(provider);
+  } catch(e) {
+    setAuthError(e.message || 'Erreur Google');
+  }
+}
+
+async function authSubmit() {
+  const email = document.getElementById('auth-email')?.value.trim();
+  const password = document.getElementById('auth-password')?.value;
+  const pseudo = document.getElementById('auth-pseudo')?.value.trim();
+  setAuthError('');
+  if (!email || !password) { setAuthError('Remplis tous les champs.'); return; }
+  try {
+    if (authMode === 'register') {
+      const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      if (pseudo) {
+        await cred.user.updateProfile({ displayName: pseudo });
+        await firestore.collection('users').doc(cred.user.uid).set({ pseudo }, { merge: true });
+      }
+    } else {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+    }
+  } catch(e) {
+    const msgs = {
+      'auth/email-already-in-use': 'Email déjà utilisé.',
+      'auth/invalid-email': 'Email invalide.',
+      'auth/wrong-password': 'Mot de passe incorrect.',
+      'auth/user-not-found': 'Aucun compte avec cet email.',
+      'auth/weak-password': 'Mot de passe trop court (6 min).',
+    };
+    setAuthError(msgs[e.code] || e.message);
+  }
+}
+
+async function signOut() {
+  await firebase.auth().signOut();
+}
+
+// ── PROFILE TAB ───────────────────────────────────────────
+async function renderProfile() {
+  if (!currentUser) return;
+  const pseudo = userProfile.pseudo || currentUser.displayName || '';
+  const email = currentUser.email || '';
+  const photoURL = currentUser.photoURL || '';
+  const providers = currentUser.providerData.map(p => {
+    if (p.providerId === 'google.com') return '🔵 Google';
+    if (p.providerId === 'password') return '✉️ Email / Mot de passe';
+    return p.providerId;
+  }).join(', ');
+
+  const avatarContent = photoURL
+    ? `<img src="${photoURL}" alt="avatar"/>`
+    : `<span>${(pseudo||email||'?')[0].toUpperCase()}</span>`;
+
+  document.getElementById('tab-profile').innerHTML = `
+    <h2 style="font-size:22px;margin-bottom:16px">Mon Profil</h2>
+
+    <div class="profile-avatar-wrap">
+      <div class="profile-avatar" id="profile-avatar-btn" onclick="document.getElementById('avatar-file').click()" title="Changer la photo">
+        ${avatarContent}
+      </div>
+      <input type="file" id="avatar-file" accept="image/*" style="display:none" onchange="uploadAvatar(this)"/>
+      <div style="text-align:center">
+        <div class="profile-name">${pseudo || 'Sans pseudo'}</div>
+        <div class="profile-email">${email}</div>
+      </div>
+      <span class="sync-badge">☁ Synchronisation active</span>
+    </div>
+
+    <div class="profile-section">
+      <h4>Pseudonyme</h4>
+      <div class="profile-edit-row">
+        <input id="pseudo-input" type="text" placeholder="Ton pseudo…" value="${pseudo}"/>
+        <button onclick="savePseudo()">Enregistrer</button>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h4>Informations du compte</h4>
+      <div class="profile-row">
+        <label>Email</label>
+        <span>${email || '—'}</span>
+      </div>
+      <div class="profile-row">
+        <label>Connexion via</label>
+        <span class="profile-provider-badge">${providers}</span>
+      </div>
+      <div class="profile-row">
+        <label>UID</label>
+        <span style="font-size:10px;color:var(--text3);word-break:break-all">${currentUser.uid.slice(0,16)}…</span>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h4>Données</h4>
+      <div class="profile-row">
+        <label>Tâches enregistrées</label>
+        <span>${tasks.length}</span>
+      </div>
+      <div class="profile-row">
+        <label>Semaines trackées</label>
+        <span>${Object.keys(scores).length}</span>
+      </div>
+      <div class="profile-row">
+        <label>Catégories</label>
+        <span>${Object.keys(CATS).length}</span>
+      </div>
+    </div>
+
+    <button class="profile-signout" onclick="signOut()">Se déconnecter</button>
+  `;
+}
+
+async function savePseudo() {
+  const val = document.getElementById('pseudo-input')?.value.trim();
+  if (!val) return;
+  userProfile.pseudo = val;
+  try {
+    await currentUser.updateProfile({ displayName: val });
+    await firestore.collection('users').doc(currentUser.uid).set({ pseudo: val }, { merge: true });
+    showToast('Pseudo mis à jour !');
+    renderProfile();
+    renderTracker(); // refresh welcome message
+  } catch(e) { showToast('Erreur : ' + e.message); }
+}
+
+async function uploadAvatar(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { showToast('Image trop lourde (max 2 Mo)'); return; }
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const base64 = e.target.result;
+    try {
+      // Store as base64 in Firestore (works without Firebase Storage)
+      await firestore.collection('users').doc(currentUser.uid).set({ photoBase64: base64 }, { merge: true });
+      userProfile.photoBase64 = base64;
+      showToast('Photo mise à jour !');
+      renderProfile();
+    } catch(err) { showToast('Erreur upload'); }
+  };
+  reader.readAsDataURL(file);
 }
 
 // ── DATES ─────────────────────────────────────────────────
@@ -570,8 +861,10 @@ function renderTracker() {
   const tXP=totalXP(wk), tMax=totalMax();
   const tRank=RANKS[getRank(tXP,tMax)];
   const tPct=tMax?Math.round(tXP/tMax*100):0;
+  const pseudo = currentUser ? (userProfile.pseudo || currentUser.displayName || currentUser.email.split('@')[0]) : '';
+  const welcome = pseudo ? `<div style="font-size:13px;color:var(--text2);margin-bottom:10px">Salut, <span style="color:var(--red);font-weight:600">${pseudo}</span> ! 👋</div>` : '';
 
-  let h = `
+  let h = `${welcome}
   <div class="week-nav">
     <button onclick="changeWeek(-1)">&#8592; Préc.</button>
     <span class="week-label">${weekLabel(wk)}</span>
@@ -1049,6 +1342,7 @@ function showTab(tab,btn){
   else if(tab==='scores')renderScores();
   else if(tab==='manage')renderManage();
   else if(tab==='settings')renderThemeSettings();
+  else if(tab==='profile')renderProfile();
 }
 function renderAll(){
   const tab=(document.querySelector('.tab.active')||{}).dataset?.tab||'tracker';
@@ -1068,8 +1362,61 @@ try {
   if (currentMode === 'light') body.classList.add('mode-light');
   if (currentAccent !== 'none') body.classList.add('accent-'+currentAccent);
 } catch(e){}
-loadSaved();
-renderTracker();
+
+// ── FIREBASE ──────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "AIzaSyCLTObgXREzb1MFQwWnQLWiRPHtNEjGTBA",
+  authDomain: "levelis.firebaseapp.com",
+  projectId: "levelis",
+  storageBucket: "levelis.firebasestorage.app",
+  messagingSenderId: "573886200942",
+  appId: "1:573886200942:web:542b177adf7616c9fc3a7f"
+};
+
+firebase.initializeApp(firebaseConfig);
+const firestore = firebase.firestore();
+
+// Auth state listener
+firebase.auth().onAuthStateChanged(async (user) => {
+  const overlay = document.getElementById('auth-overlay');
+  const authForms = document.getElementById('auth-forms');
+  const authLoading = document.getElementById('auth-loading');
+
+  if (user) {
+    currentUser = user;
+    // Load Firestore profile extras (pseudo, photoBase64)
+    try {
+      const doc = await firestore.collection('users').doc(user.uid).get();
+      userProfile = doc.exists ? doc.data() : {};
+    } catch(e) { userProfile = {}; }
+
+    // Load data from cloud
+    await loadFromCloud(user.uid);
+
+    // Apply theme prefs
+    try {
+      currentMode   = localStorage.getItem('xp-mode')   || 'dark';
+      currentAccent = localStorage.getItem('xp-accent') || 'none';
+      if (currentMode === 'light') document.body.classList.add('mode-light');
+      if (currentAccent !== 'none') document.body.classList.add('accent-'+currentAccent);
+    } catch(e){}
+
+    // Hide overlay
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity .3s';
+    setTimeout(() => { overlay.style.display = 'none'; }, 300);
+
+    renderTracker();
+  } else {
+    currentUser = null;
+    userProfile = {};
+    // Show auth overlay
+    overlay.style.display = 'flex';
+    overlay.style.opacity = '1';
+    if (authLoading) authLoading.style.display = 'none';
+    if (authForms)   { authForms.style.display = 'flex'; switchAuthTab('login'); }
+  }
+});
 </script>
 </body>
 </html>
