@@ -143,6 +143,13 @@
   .r-platine{background:#4FC3F7;color:#fff}.r-diamant{background:#AB47BC;color:#fff}
   .r-immortal{background:#FF7043;color:#fff}
 
+  /* Base pill — fully round, applies everywhere */
+  .rank-badge{
+    display:inline-block; border-radius:999px;
+    font-size:11px; font-weight:700; padding:2px 10px;
+    letter-spacing:.3px;
+  }
+
   .prog-wrap{margin:4px 0 2px;background:var(--border);border-radius:4px;height:5px;overflow:hidden}
   .prog-bar{height:100%;border-radius:4px;transition:width .4s}
 
@@ -388,61 +395,217 @@
     .m-day-label { font-size:7px }
   }
 
-  /* ══════════════════════════════
-     SCORES & RANGS — nouvelle UI
-     ══════════════════════════════ */
-  .sc-hero {
-    display:flex; align-items:center; justify-content:space-between;
-    background:var(--bg2); border:0.5px solid var(--border2);
-    border-radius:14px; padding:18px 22px; margin-bottom:10px;
+  /* ══════════════════════════════════════════════════════
+     SCORES & RANGS — refonte visuelle "flex" premium
+     ══════════════════════════════════════════════════════ */
+
+  /* ── Bannière profil pleine largeur ── */
+  .sc-profile-hero {
+    position:relative; overflow:hidden;
+    background:var(--red); color:#fff;
+    border-radius:20px; padding:32px 32px 28px;
+    margin-bottom:12px;
+    display:flex; align-items:center; gap:26px;
   }
-  .sc-hero-label { font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:.6px; margin-bottom:4px }
-  .sc-hero-xp { font-family:'Bebas Neue',sans-serif; font-size:38px; line-height:1; color:var(--text) }
-  .sc-hero-max { font-size:18px; color:var(--text3) }
-  .sc-hero-badge { margin-top:8px; display:inline-block; font-size:13px; padding:3px 12px }
-  .sc-hero-right { text-align:right }
-  .sc-hero-pct { font-family:'Bebas Neue',sans-serif; font-size:48px; color:var(--red); line-height:1 }
-  .sc-prog-wrap { height:6px; background:var(--bg3); border-radius:999px; overflow:hidden; margin-bottom:14px }
-  .sc-prog-bar  { height:100%; border-radius:999px; transition:width .4s ease }
+  /* Cercles déco en fond */
+  .sc-profile-hero::before {
+    content:''; position:absolute;
+    width:340px; height:340px; border-radius:50%;
+    background:rgba(255,255,255,.06);
+    top:-120px; right:-80px; pointer-events:none;
+  }
+  .sc-profile-hero::after {
+    content:''; position:absolute;
+    width:200px; height:200px; border-radius:50%;
+    background:rgba(255,255,255,.04);
+    bottom:-80px; right:80px; pointer-events:none;
+  }
+  /* Avatar XL avec ring multicouche */
+  .sc-profile-avatar {
+    width:110px; height:110px; border-radius:50%;
+    border:3px solid rgba(255,255,255,.6); flex-shrink:0;
+    background:rgba(0,0,0,.25);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+    box-shadow:
+      0 0 0 6px rgba(255,255,255,.12),
+      0 0 0 10px rgba(255,255,255,.05),
+      0 12px 40px rgba(0,0,0,.4);
+    position:relative; z-index:1;
+    transition:transform .2s;
+  }
+  .sc-profile-avatar:hover { transform:scale(1.04) }
+
+  .sc-profile-info { flex:1; min-width:0; position:relative; z-index:1 }
+  .sc-profile-label {
+    font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:2px;
+    opacity:.55; margin-bottom:6px;
+  }
+  /* Pseudo IMMENSE — effet "carte de joueur" */
+  .sc-profile-pseudo {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(40px, 6vw, 72px);
+    letter-spacing:3px; line-height:.9; color:#fff;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    text-shadow:0 3px 20px rgba(0,0,0,.3);
+    /* Léger biseautage pour l'effet "gravé" */
+    -webkit-text-stroke:0.5px rgba(255,255,255,.2);
+  }
+  .sc-profile-subtitle {
+    font-size:12px; opacity:.55; margin-top:8px; letter-spacing:.5px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .sc-profile-subtitle::before {
+    content:''; width:18px; height:1px; background:rgba(255,255,255,.4);
+  }
+  .sc-profile-global-rank { text-align:right; flex-shrink:0; position:relative; z-index:1 }
+  .sc-profile-rank-label {
+    font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px;
+    opacity:.55; margin-bottom:8px;
+  }
+  /* Badge rang global : grand, glassmorphism */
+  .sc-profile-rank-badge {
+    font-size:18px !important; padding:8px 22px !important;
+    display:inline-block; border-radius:999px !important;
+    background:rgba(255,255,255,.18) !important; color:#fff !important;
+    backdrop-filter:blur(8px);
+    border:1.5px solid rgba(255,255,255,.35);
+    font-weight:800 !important; letter-spacing:.8px;
+    box-shadow:0 4px 16px rgba(0,0,0,.2);
+    text-transform:uppercase;
+  }
+  .sc-profile-rank-sub { font-size:10px; opacity:.5; margin-top:7px; letter-spacing:.3px }
+
+  /* ── Hero XP semaine — compact semi-transparent ── */
+  .sc-hero {
+    background:var(--red);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    color:#fff;
+    border-radius:16px; padding:8px 18px 8px; margin-bottom:0;
+    display:flex; align-items:center; gap:18px;
+    border:1px solid rgba(255,255,255,.15);
+  }
+  .sc-hero-left { flex:1 }
+  .sc-hero-label { font-size:10px; opacity:.7; text-transform:uppercase; letter-spacing:.6px; margin-bottom:1px }
+  .sc-hero-xp { font-family:'Bebas Neue',sans-serif; font-size:30px; line-height:1; color:#fff }
+  .sc-hero-max { font-size:14px; opacity:.6 }
+  .sc-hero-badge {
+    margin-top:3px; display:inline-block; font-size:11px; padding:2px 10px;
+    border-radius:999px; background:rgba(255,255,255,.18); color:#fff; font-weight:600;
+  }
+  .sc-hero-right { margin-left:auto; text-align:right }
+  .sc-hero-pct { font-family:'Bebas Neue',sans-serif; font-size:30px; color:#fff; line-height:1; opacity:.9 }
+  .sc-hero-pct-label { font-size:10px; opacity:.65 }
+
+  /* Barre XP fine — couleur accent */
+  .sc-prog-wrap {
+    height:4px; background:rgba(255,255,255,.15);
+    border-radius:999px; overflow:hidden;
+    margin:8px 0 0;
+  }
+  .sc-prog-bar {
+    height:100%; border-radius:999px;
+    transition:width .5s cubic-bezier(.4,0,.2,1);
+    background:rgba(255,255,255,.7);
+  }
+
+  /* ── Ladder des rangs ── */
   .sc-ladder {
     display:flex; gap:4px; margin-bottom:20px;
     background:var(--bg2); border:0.5px solid var(--border);
-    border-radius:12px; padding:12px 14px; overflow-x:auto; scrollbar-width:none;
+    border-radius:20px; padding:14px 16px;
+    overflow-x:auto; scrollbar-width:none;
   }
   .sc-ladder::-webkit-scrollbar { display:none }
   .sc-ladder-step {
     flex:1; min-width:72px; display:flex; flex-direction:column;
-    align-items:center; gap:5px; padding:8px 4px; border-radius:8px;
+    align-items:center; gap:5px; padding:8px 4px; border-radius:14px;
     border:1.5px solid transparent; transition:all .2s; opacity:.4;
   }
-  .sc-ladder-step.done  { opacity:.65 }
+  .sc-ladder-step.done  { opacity:.6 }
   .sc-ladder-step.active {
     opacity:1; background:var(--bg3);
     border-color:var(--border2); box-shadow:0 0 0 1px var(--border2);
   }
   .sc-ladder-range { font-size:10px; color:var(--text3); text-align:center; white-space:nowrap }
-  .sc-cards {
+
+  /* ── Titre section jauges ── */
+  .sc-gauges-title {
+    font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1.5px;
+    color:var(--text2); margin:20px 0 12px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .sc-gauges-title::after {
+    content:''; flex:1; height:1px; background:var(--border);
+  }
+
+  /* ── Grille des cartes jauges ── */
+  .sc-gauges {
     display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
     gap:12px; margin-bottom:12px;
   }
-  .sc-card {
+  .sc-gauge-card {
     background:var(--bg2); border:0.5px solid var(--border);
-    border-radius:14px; padding:16px 18px; display:flex; flex-direction:column;
-    transition:border-color .2s;
+    border-radius:18px; padding:18px 20px; display:flex; flex-direction:column;
+    transition:border-color .2s, transform .15s, box-shadow .2s;
+    position:relative; overflow:hidden;
   }
-  .sc-card:hover { border-color:var(--border2) }
-  .sc-card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px }
-  .sc-card-name { font-size:15px; font-weight:600 }
-  .sc-card-xp-row { display:flex; align-items:baseline; gap:6px; margin-bottom:8px }
-  .sc-card-xp  { font-family:'Bebas Neue',sans-serif; font-size:28px; line-height:1 }
-  .sc-card-max { font-size:12px; color:var(--text3); flex:1 }
-  .sc-card-pct { font-size:12px; color:var(--text2); font-weight:600 }
+  .sc-gauge-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:var(--cat-accent,var(--red)); border-radius:18px 18px 0 0;
+    opacity:.7;
+  }
+  .sc-gauge-card:hover {
+    border-color:var(--border2);
+    transform:translateY(-2px);
+    box-shadow:0 8px 28px rgba(0,0,0,.22);
+  }
+  .sc-gauge-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px }
+  .sc-gauge-dot { width:12px; height:12px; border-radius:50%; display:inline-block; flex-shrink:0 }
+  .sc-gauge-name { font-size:16px; font-weight:700; letter-spacing:.2px }
+  .sc-gauge-avg-rank { font-size:11px; color:var(--text3); display:flex; align-items:center; gap:4px }
+  .sc-gauge-xp-row { display:flex; align-items:baseline; gap:6px; margin-bottom:10px }
+  .sc-gauge-xp { font-family:'Bebas Neue',sans-serif; font-size:36px; line-height:1 }
+  .sc-gauge-max { font-size:13px; color:var(--text3); flex:1 }
+  .sc-gauge-pct { font-size:14px; color:var(--text2); font-weight:700 }
+
+  /* Barre principale large et arrondie */
+  .sc-gauge-bar-wrap {
+    position:relative; height:24px; border-radius:12px;
+    background:var(--bg3); overflow:hidden; margin-bottom:6px;
+    border:1px solid var(--border);
+  }
+  .sc-gauge-track { position:absolute; inset:0; display:flex; pointer-events:none }
+  .sc-gauge-seg { height:100%; display:flex; align-items:stretch; position:relative }
+  .sc-gauge-seg-fill { height:100%; transition:width .65s cubic-bezier(.4,0,.2,1); min-width:0 }
+  .sc-gauge-tick {
+    position:absolute; right:0; top:10%; bottom:10%;
+    width:1.5px; background:var(--bg2); opacity:.6; z-index:2;
+  }
+  .sc-gauge-fill-overlay {
+    position:absolute; top:0; left:0; height:100%;
+    border-radius:12px; transition:width .65s cubic-bezier(.4,0,.2,1);
+    pointer-events:none;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.18), 0 0 12px rgba(0,0,0,.12);
+  }
+  /* Reflet glossy sur la barre */
+  .sc-gauge-bar-wrap::after {
+    content:''; position:absolute; top:0; left:0; right:0; height:40%;
+    background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,transparent 100%);
+    border-radius:12px 12px 0 0; pointer-events:none; z-index:5;
+  }
+
+  .sc-gauge-rank-labels { display:flex; justify-content:space-between; margin-bottom:10px }
+  .sc-gauge-rank-lbl { font-size:9px; color:var(--text3); letter-spacing:.2px; transition:opacity .3s }
+
+  /* Pip steps */
   .sc-rank-steps {
-    display:flex; align-items:center; gap:0; margin-bottom:10px;
+    display:flex; align-items:center; margin-bottom:10px;
     position:relative; padding:4px 0;
   }
   .sc-rank-steps::before {
-    content:''; position:absolute; top:50%; left:10px; right:10px;
+    content:''; position:absolute; top:50%; left:8px; right:8px;
     height:2px; background:var(--border2); transform:translateY(-50%); z-index:0;
   }
   .sc-rank-pip {
@@ -451,29 +614,39 @@
     position:relative; z-index:1; cursor:default; transition:transform .15s;
   }
   .sc-rank-pip.done { opacity:.55 }
-  .sc-rank-pip.cur  { transform:scale(1.35); box-shadow:0 0 0 3px var(--bg2) }
+  .sc-rank-pip.cur  { transform:scale(1.4); box-shadow:0 0 0 3px var(--bg2) }
   .sc-pip-tooltip {
     display:none; position:absolute; bottom:calc(100% + 8px); left:50%;
     transform:translateX(-50%);
     background:var(--bg3); border:1px solid var(--border2);
-    color:var(--text); font-size:11px; padding:4px 8px; border-radius:6px;
+    color:var(--text); font-size:11px; padding:4px 8px; border-radius:8px;
     white-space:nowrap; z-index:10; text-align:center; line-height:1.5;
     pointer-events:none;
   }
   .sc-rank-pip:hover .sc-pip-tooltip { display:block }
   .sc-card-next { font-size:12px; color:var(--text2); display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:2px }
 
+  /* sc-card kept for legacy (not used in new layout but keeps JS safe) */
+  .sc-cards { display:none }
+  .sc-card  { display:none }
+
   @media(max-width:640px){
-    .sc-hero { padding:14px 14px; margin-bottom:8px; border-radius:12px }
-    .sc-hero-xp { font-size:28px }
+    .sc-profile-hero { padding:18px 16px 16px; gap:14px; border-radius:16px }
+    .sc-profile-avatar { width:72px; height:72px }
+    .sc-profile-pseudo { font-size:clamp(28px,8vw,40px) }
+    .sc-profile-global-rank { text-align:left }
+    .sc-hero { padding:14px 16px 12px; border-radius:14px }
+    .sc-hero-xp { font-size:38px }
     .sc-hero-pct { font-size:34px }
-    .sc-hero-badge { font-size:11px }
-    .sc-ladder { gap:3px; padding:10px 10px; margin-bottom:14px }
-    .sc-ladder-step { min-width:54px; padding:6px 2px }
+    .sc-prog-wrap { margin:8px 0 0 }
+    .sc-ladder { gap:3px; padding:10px 10px; margin-bottom:14px; border-radius:14px }
+    .sc-ladder-step { min-width:54px; padding:6px 2px; border-radius:10px }
     .sc-ladder-range { font-size:9px }
-    .sc-cards { grid-template-columns:1fr; gap:10px }
-    .sc-card { padding:14px 14px }
-    .sc-card-xp { font-size:24px }
+    .sc-gauges { grid-template-columns:1fr; gap:10px }
+    .sc-gauge-card { padding:14px 16px; border-radius:16px }
+    .sc-gauge-xp { font-size:28px }
+    .sc-gauge-bar-wrap { height:18px; border-radius:10px }
+    .sc-gauge-fill-overlay { border-radius:10px }
   }
 
   /* ── AUTH OVERLAY ── */
@@ -563,7 +736,7 @@
 </div>
 
 <div class="header">
-  <h1>LEVELIS</h1>
+  <h1>LEVELIS</h1><span style="font-size:10px;color:var(--text3);font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:.5px;margin-left:6px;align-self:flex-end;margin-bottom:3px">alpha 0.1</span>
   <div class="save-indicator">
     <div class="save-dot saved" id="save-dot"></div>
     <span id="save-label">Prêt</span>
@@ -589,6 +762,7 @@
   <div id="tab-scores" class="panel"></div>
   <div id="tab-manage" class="panel"></div>
   <div id="tab-settings" class="panel"></div>
+  <div id="tab-profile" class="panel"></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -654,6 +828,7 @@ let tasks = [
 let scores = {};
 let nextId = 24;
 let currentWeek = getWeekKey(new Date());
+let userNavigatedWeek = false; // true quand l'utilisateur navigue manuellement
 
 // ── PERSISTENCE ───────────────────────────────────────────
 let cloudSaveTimer = null;
@@ -961,6 +1136,13 @@ function renderTracker() {
   const pseudo = currentUser ? (userProfile.pseudo || currentUser.displayName || currentUser.email.split('@')[0]) : '';
   const welcome = pseudo ? `<div style="font-size:13px;color:var(--text2);margin-bottom:10px">Salut, <span style="color:var(--red);font-weight:600">${pseudo}</span> ! 👋</div>` : '';
 
+  // ── Détection du jour courant dans la semaine affichée ──
+  const todayKey = getWeekKey(new Date());
+  const isCurrentWeek = (wk === todayKey);
+  // getDay() : 0=dim, 1=lun … 6=sam → on mappe sur DAYS (0=Lun … 6=Dim)
+  const todayJsDay = new Date().getDay(); // 0=dim
+  const todayDayIdx = isCurrentWeek ? ((todayJsDay + 6) % 7) : -1; // -1 si autre semaine
+
   let h = `${welcome}
   <div class="week-nav">
     <button onclick="changeWeek(-1)">&#8592; Préc.</button>
@@ -1039,7 +1221,7 @@ function renderTracker() {
         </colgroup>
         <thead><tr>
           <th></th>
-          ${DAYS.map(d=>`<th>${d.slice(0,3)}</th>`).join('')}
+          ${DAYS.map((d,i)=>`<th style="${i===todayDayIdx?'color:var(--text);font-weight:700;font-size:10px':''}">${d.slice(0,3)}${i===todayDayIdx?'<br><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--red);margin-top:1px"></span>':''}</th>`).join('')}
           <th>XP</th>
         </tr></thead>
         <tbody>`;
@@ -1068,10 +1250,11 @@ function renderTracker() {
           <span class="m-task-xp" style="color:${c.color}">${rowXP.toFixed(1)} XP</span>
         </div>
         <div class="m-days-row">`;
-      DAYS.forEach(day => {
+      DAYS.forEach((day,di) => {
         const sc=getScore(wk,t.id,day);
+        const isToday = di === todayDayIdx;
         h+=`<div class="m-day-col">
-          <div class="m-day-label">${day.slice(0,2)}</div>
+          <div class="m-day-label" style="${isToday?'color:var(--text);font-weight:700;font-size:10px':''}">${day.slice(0,2)}${isToday?'<span style="display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--red);margin-left:1px;vertical-align:middle"></span>':''}</div>
           <div class="m-day-btns">`;
         [[0,'red','✕'],[0.5,'ora','½'],[1,'grn','✓']].forEach(([v,cls,lbl])=>{
           h+=`<button class="dot-btn ${cls}${sc===v?' active':''}" onclick="toggleScore('${wk}',${t.id},'${day}',${v})">${lbl}</button>`;
@@ -1088,352 +1271,179 @@ function renderTracker() {
   document.getElementById('tab-tracker').innerHTML = h;
 }
 
-// ── STATS HELPERS ─────────────────────────────────────────
-function getAllWeekKeys() {
-  return Object.keys(scores).sort();
-}
-
-function getWeekXP(wk) {
-  return totalXPForWeek(wk);
-}
-
-function totalXPForWeek(wk) {
-  return Object.keys(CATS).reduce((s, c) => {
-    return s + tasks.filter(t => t.cat === c).reduce((a, t) => {
-      return a + DAYS.reduce((b, d) => b + getScore(wk, t.id, d), 0);
-    }, 0);
-  }, 0);
-}
-
-function getWeekPct(wk) {
-  const max = totalMax();
-  if (!max) return 0;
-  return getWeekXP(wk) / max;
-}
-
-function getMonthKey(wk) {
-  // Returns "YYYY-MM" for a given week key (week start date)
-  return wk.slice(0, 7);
-}
-
-function getYearKey(wk) {
-  return wk.slice(0, 4);
-}
-
-function computeGlobalStats() {
-  const allWeeks = getAllWeekKeys();
-  const tMax = totalMax();
-
-  // ── XP total cumulé ──
-  let totalXPAll = 0;
-  allWeeks.forEach(wk => { totalXPAll += getWeekXP(wk); });
-
-  // ── Tâches accomplies (score > 0) ──
-  let totalTasksDone = 0;
-  allWeeks.forEach(wk => {
-    tasks.forEach(t => {
-      DAYS.forEach(d => { if (getScore(wk, t.id, d) > 0) totalTasksDone++; });
-    });
-  });
-
-  // ── Séries (streaks) : semaines consécutives avec XP > 0 ──
-  let currentStreak = 0, bestStreak = 0, streak = 0;
-  const today = getWeekKey(new Date());
-  // Walk weeks sorted
-  const sortedWeeks = [...allWeeks].sort();
-  let prevWk = null;
-  sortedWeeks.forEach(wk => {
-    const xp = getWeekXP(wk);
-    if (xp > 0) {
-      if (prevWk) {
-        // Check if consecutive
-        const d = parseLocal(prevWk);
-        d.setDate(d.getDate() + 7);
-        if (toKey(d) === wk) streak++;
-        else streak = 1;
-      } else { streak = 1; }
-      if (streak > bestStreak) bestStreak = streak;
-      prevWk = wk;
-    } else {
-      prevWk = wk;
-      streak = 0;
-    }
-  });
-  // Current streak: from most recent week backwards
-  currentStreak = 0;
-  for (let i = sortedWeeks.length - 1; i >= 0; i--) {
-    const wk = sortedWeeks[i];
-    if (getWeekXP(wk) > 0) {
-      if (i === sortedWeeks.length - 1) currentStreak = 1;
-      else {
-        const next = sortedWeeks[i + 1];
-        const d = parseLocal(wk);
-        d.setDate(d.getDate() + 7);
-        if (toKey(d) === next) currentStreak++;
-        else break;
-      }
-    } else break;
-  }
-
-  // ── Meilleure semaine ──
-  let bestWeekKey = null, bestWeekXP = 0;
-  allWeeks.forEach(wk => {
-    const xp = getWeekXP(wk);
-    if (xp > bestWeekXP) { bestWeekXP = xp; bestWeekKey = wk; }
-  });
-
-  // ── Meilleur mois ──
-  const monthMap = {};
-  allWeeks.forEach(wk => {
-    const mk = getMonthKey(wk);
-    if (!monthMap[mk]) monthMap[mk] = 0;
-    monthMap[mk] += getWeekXP(wk);
-  });
-  let bestMonthKey = null, bestMonthXP = 0;
-  Object.entries(monthMap).forEach(([mk, xp]) => {
-    if (xp > bestMonthXP) { bestMonthXP = xp; bestMonthKey = mk; }
-  });
-
-  // ── Meilleure année ──
-  const yearMap = {};
-  allWeeks.forEach(wk => {
-    const yk = getYearKey(wk);
-    if (!yearMap[yk]) yearMap[yk] = 0;
-    yearMap[yk] += getWeekXP(wk);
-  });
-  let bestYearKey = null, bestYearXP = 0;
-  Object.entries(yearMap).forEach(([yk, xp]) => {
-    if (xp > bestYearXP) { bestYearXP = xp; bestYearKey = yk; }
-  });
-
-  // ── Catégorie la plus développée (XP total tous temps) ──
-  let bestCat = null, bestCatXP = 0;
-  Object.keys(CATS).forEach(cat => {
-    let xp = 0;
-    allWeeks.forEach(wk => {
-      xp += tasks.filter(t => t.cat === cat).reduce((s, t) =>
-        s + DAYS.reduce((a, d) => a + getScore(wk, t.id, d), 0), 0);
-    });
-    if (xp > bestCatXP) { bestCatXP = xp; bestCat = cat; }
-  });
-
-  // ── Moyennes ──
-  const weeksWithData = allWeeks.filter(wk => getWeekXP(wk) > 0);
-  const avgWeekly = weeksWithData.length > 0
-    ? weeksWithData.reduce((s, wk) => s + getWeekPct(wk), 0) / weeksWithData.length
-    : 0;
-
-  const monthKeys = Object.keys(monthMap);
-  const avgMonthly = monthKeys.length > 0
-    ? Object.values(monthMap).reduce((s, v) => s + v, 0) / monthKeys.length / (tMax * 4.33)
-    : 0;
-
-  const yearKeys = Object.keys(yearMap);
-  const avgYearly = yearKeys.length > 0
-    ? Object.values(yearMap).reduce((s, v) => s + v, 0) / yearKeys.length / (tMax * 52)
-    : 0;
-
-  // ── Progression cumulée ──
-  const totalPossible = allWeeks.length * tMax;
-  const cumulatedPct = totalPossible > 0 ? totalXPAll / totalPossible : 0;
-
-  // ── Rang global composite ──
-  // Weighted: weekly avg 40%, monthly 30%, yearly 20%, cumulated 10%
-  const globalScore = (avgWeekly * 0.4) + (Math.min(avgMonthly, 1) * 0.3) + (Math.min(avgYearly, 1) * 0.2) + (cumulatedPct * 0.1);
-  const globalRankIdx = getRank(globalScore * tMax, tMax);
-
-  // ── Historique (12 dernières semaines) ──
-  const last12 = allWeeks.slice(-12);
-
-  return {
-    totalXPAll, totalTasksDone, currentStreak, bestStreak,
-    bestWeekKey, bestWeekXP, bestMonthKey, bestMonthXP, bestYearKey, bestYearXP,
-    bestCat, bestCatXP, avgWeekly, avgMonthly, avgYearly, cumulatedPct,
-    globalRankIdx, last12, monthMap, yearMap, weeksCount: allWeeks.length
-  };
-}
-
-// ── XP PAR CATÉGORIE pour une liste de semaines ──────────
-function catXPForWeeks(weekList, cat) {
-  return weekList.reduce((s, wk) =>
-    s + tasks.filter(t => t.cat === cat).reduce((a, t) =>
-      a + DAYS.reduce((b, d) => b + getScore(wk, t.id, d), 0), 0), 0);
-}
-
-// Semaines appartenant au mois courant
-function currentMonthWeeks() {
-  const now = new Date();
-  const ym = now.getFullYear() * 12 + now.getMonth();
-  return getAllWeekKeys().filter(wk => {
-    const d = parseLocal(wk);
-    // A week "belongs" to a month if its Monday falls in that month
-    return d.getFullYear() * 12 + d.getMonth() === ym;
-  });
-}
-
 // ── RENDER SCORES ─────────────────────────────────────────
 function renderScores() {
   const wk = currentWeek;
-  const tMax = totalMax();
-  const stats = computeGlobalStats();
+  const tXP = totalXP(wk), tMax = totalMax();
+  const tRidx = getRank(tXP, tMax);
+  const tRank = RANKS[tRidx];
+  const tPct = tMax ? Math.round(tXP / tMax * 100) : 0;
 
-  // ── Données communes ──
+  // ── Données profil ──
   const pseudo = currentUser ? (userProfile.pseudo || currentUser.displayName || currentUser.email?.split('@')[0] || 'Joueur') : 'Joueur';
   const photoSrc = userProfile.photoBase64 || (currentUser ? currentUser.photoURL : '') || '';
   const avatarContent = photoSrc
     ? `<img src="${photoSrc}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`
-    : `<span style="font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;color:var(--red)">${(pseudo||'?')[0].toUpperCase()}</span>`;
+    : `<span style="font-size:42px;line-height:1">${(pseudo||'?')[0].toUpperCase()}</span>`;
 
-  // Global rank color (use category-style color from rank badge)
-  const globalRank = RANKS[stats.globalRankIdx];
-  const rankColors = {'r-hors':'#888','r-bronze':'#CD7F32','r-argent':'#999','r-or':'#F5C518','r-platine':'#4FC3F7','r-diamant':'#AB47BC','r-immortal':'#FF7043'};
-  const globalRankColor = rankColors[globalRank.cls] || 'var(--red)';
-
-  // ── Données période : ALL TIME ──
-  const allWeeks = getAllWeekKeys();
-  const allTimeXP = stats.totalXPAll;
-  // Pour le max all-time, on multiplie le max hebdo par le nb de semaines trackées
-  const allTimeMax = tMax * Math.max(allWeeks.length, 1);
-
-  // ── Données période : MOIS EN COURS ──
-  const monthWeeks = currentMonthWeeks();
-  const monthXP = monthWeeks.reduce((s, w) => s + getWeekXP(w), 0);
-  const monthMax = tMax * Math.max(monthWeeks.length, 1);
-  const monthPct = monthMax ? Math.round(monthXP / monthMax * 100) : 0;
-
-  // ── Données période : SEMAINE EN COURS ──
-  const weekXP = totalXP(wk);
-  const weekPct = tMax ? Math.round(weekXP / tMax * 100) : 0;
-  const weekRidx = getRank(weekXP, tMax);
-  const weekRank = RANKS[weekRidx];
-
-  // ── Rang all-time (basé sur score global composite) ──
-  const allTimePct = allTimeMax ? Math.round(allTimeXP / allTimeMax * 100) : 0;
-
-  // ── Rang mensuel ──
-  const monthRidx = getRank(monthXP, monthMax);
-  const monthRank = RANKS[monthRidx];
-
-  // Helper : construit un bloc hero + summary cards pour une période donnée
-  function buildPeriodBlock({ periodLabel, periodSublabel, heroXP, heroMax, heroPct, heroRank, heroRidx, catXPFn }) {
-    const catKeys = Object.keys(CATS);
-    const thresh = getRankThresholds(heroMax);
-    const heroColor = rankColors[heroRank.cls] || 'var(--red)';
-
-    let b = `
-    <div class="task-section-header" style="margin-bottom:12px;padding-bottom:8px">
-      <h3 style="font-size:18px;color:var(--text)">${periodLabel}</h3>
-      ${periodSublabel ? `<span class="cat-pill" style="background:var(--bg3);color:var(--text2);border:0.5px solid var(--border2)">${periodSublabel}</span>` : ''}
-    </div>`;
-
-    // Hero bar — exactement comme le Tracker
-    b += `<div class="hero" style="margin-bottom:14px">
-      <div>
-        <div class="label">XP Total</div>
-        <div class="hero-xp">${Math.round(heroXP)}</div>
-        <span class="hero-badge ${heroRank.cls}">${heroRank.name}</span>
-      </div>
-      <div class="hero-right">
-        <div class="label">sur ${Math.round(heroMax)} XP max</div>
-        <div class="hero-pct" style="font-size:22px;font-family:'Bebas Neue',sans-serif;opacity:1">${heroPct}%</div>
-        <div style="margin-top:6px">
-          <div style="background:rgba(255,255,255,.2);border-radius:4px;height:4px;overflow:hidden">
-            <div style="width:${heroPct}%;height:100%;background:#fff;border-radius:4px;transition:width .4s"></div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-
-    // Summary cards par catégorie — exactement comme le Tracker
-    b += `<div class="summary-grid" style="margin-bottom:20px">`;
-    catKeys.forEach(cat => {
-      const xp = catXPFn(cat);
-      const max = catMax(cat) * (heroMax / tMax); // proportionnel au max de la période
-      const rank = RANKS[getRank(xp, max)];
-      const pct = max ? Math.round(xp / max * 100) : 0;
-      const c = CATS[cat];
-      b += `<div class="scard">
-        <div class="cat-label"><span class="cat-dot" style="background:${c.color}"></span>${cat}</div>
-        <div class="xp-val" style="color:${c.color}">${Math.round(xp)}</div>
-        <div class="xp-max">/ ${Math.round(max)} XP</div>
-        <div class="prog-wrap"><div class="prog-bar" style="width:${pct}%;background:${c.color}"></div></div>
-        <span class="rank-badge ${rank.cls}">${rank.name}</span>
-      </div>`;
-    });
-    b += `</div>`;
-    return b;
+  // ── Calcul rang global (moyenne toutes semaines) ──
+  const allWeeks = Object.keys(scores);
+  let globalRankIdx = tRidx;
+  let globalRankLabel = '';
+  if (allWeeks.length > 1) {
+    const avgPct = allWeeks.reduce((sum, w) => {
+      const mx = totalMax();
+      return sum + (mx ? totalXP(w) / mx : 0);
+    }, 0) / allWeeks.length;
+    globalRankIdx = getRank(avgPct * totalMax(), totalMax());
+    globalRankLabel = RANKS[globalRankIdx].name;
+  } else {
+    globalRankLabel = tRank.name;
+    globalRankIdx = tRidx;
   }
 
-  let h = ``;
+  // ── Rang moyen par catégorie (toutes semaines) ──
+  const catAvgRanks = {};
+  Object.keys(CATS).forEach(cat => {
+    const mx = catMax(cat);
+    if (!mx || allWeeks.length === 0) { catAvgRanks[cat] = 0; return; }
+    const avg = allWeeks.reduce((s,w)=>s+catXP(w,cat),0) / allWeeks.length;
+    catAvgRanks[cat] = getRank(avg, mx);
+  });
+  const catRankSum = Object.values(catAvgRanks).reduce((a,b)=>a+b,0);
+  const catRankAvg = Object.keys(CATS).length ? Math.round(catRankSum / Object.keys(CATS).length) : 0;
+  const globalRankFromCats = Math.min(catRankAvg, RANKS.length - 1);
 
-  // ══════════════════════════════════════════════════════════
-  // HEADER IDENTITÉ — photo + pseudo + rang global
-  // ══════════════════════════════════════════════════════════
-  h += `<div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--border)">
-    <div style="width:56px;height:56px;border-radius:50%;border:2.5px solid ${globalRankColor};
-      display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:var(--bg3);">
-      ${avatarContent}
+  // ── Hero profile ──
+  let h = `
+  <div class="sc-profile-hero">
+    <div class="sc-profile-avatar">${avatarContent}</div>
+    <div class="sc-profile-info">
+      <div class="sc-profile-label">LEVELIS · Tableau de bord</div>
+      <div class="sc-profile-pseudo">${pseudo}</div>
+      <div class="sc-profile-subtitle">${allWeeks.length} semaine${allWeeks.length>1?'s':''} trackée${allWeeks.length>1?'s':''}</div>
     </div>
-    <div style="flex:1">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;line-height:1">${pseudo}</div>
-      <div style="margin-top:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-        <span class="rank-badge ${globalRank.cls}">⭐ ${globalRank.name}</span>
-        <span style="font-size:11px;color:var(--text3)">Rang global · ${stats.weeksCount} sem. trackées</span>
-      </div>
-    </div>
-    <div style="text-align:right;flex-shrink:0">
-      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px">XP all time</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:${globalRankColor};line-height:1">${Math.round(allTimeXP)}</div>
+    <div class="sc-profile-global-rank">
+      <div class="sc-profile-rank-label">Rang global</div>
+      <span class="sc-profile-rank-badge">${RANKS[globalRankFromCats].name}</span>
+      <div class="sc-profile-rank-sub">moy. toutes catégories</div>
     </div>
   </div>`;
 
-  // ══════════════════════════════════════════════════════════
-  // BLOC 1 — ALL TIME
-  // ══════════════════════════════════════════════════════════
-  h += buildPeriodBlock({
-    periodLabel: 'All Time',
-    periodSublabel: `${allWeeks.length} semaine${allWeeks.length!==1?'s':''} · ${stats.totalTasksDone} tâches · 🔥${stats.currentStreak} sem. en cours`,
-    heroXP: allTimeXP,
-    heroMax: allTimeMax,
-    heroPct: allTimePct,
-    heroRank: globalRank,
-    heroRidx: stats.globalRankIdx,
-    catXPFn: cat => catXPForWeeks(allWeeks, cat)
+  // ── Hero XP semaine courante ──
+  h += `
+  <div class="sc-hero">
+    <div style="width:100%">
+      <div style="display:flex;align-items:center;gap:18px;margin-bottom:8px">
+        <div class="sc-hero-left">
+          <div class="sc-hero-label">XP Total cette semaine</div>
+          <div class="sc-hero-xp">${tXP.toFixed(1)} <span class="sc-hero-max">/ ${tMax} XP</span></div>
+          <span class="hero-badge ${tRank.cls}" style="background:rgba(255,255,255,.2);color:#fff;margin-top:3px;display:inline-block;border-radius:999px;font-size:11px;padding:2px 10px;font-weight:600">${tRank.name}</span>
+        </div>
+        <div class="sc-hero-right" style="margin-left:auto;text-align:right">
+          <div class="sc-hero-pct">${tPct}%</div>
+          <div class="sc-hero-pct-label">accompli</div>
+        </div>
+      </div>
+      <div class="sc-prog-wrap"><div class="sc-prog-bar" style="width:${tPct}%"></div></div>
+    </div>
+  </div>`;
+
+  // ── Rank ladder ──
+  const tThresh = getRankThresholds(tMax);
+  h += `<div class="sc-ladder">`;
+  RANKS.forEach((r, i) => {
+    const active = i === tRidx;
+    const done = i < tRidx;
+    const [lo, hi] = tThresh[i];
+    h += `<div class="sc-ladder-step ${active ? 'active' : ''} ${done ? 'done' : ''}">
+      <span class="rank-badge ${r.cls}" style="font-size:10px;padding:2px 7px">${r.name}</span>
+      <div class="sc-ladder-range">${i === 0 ? '0' : `${lo}–${hi}`}</div>
+    </div>`;
+  });
+  h += `</div>`;
+
+  // ── Per-category GAUGES ──
+  h += `<div class="sc-gauges-title">Progression par catégorie</div>`;
+  h += `<div class="sc-gauges">`;
+  Object.keys(CATS).forEach(cat => {
+    const xp = catXP(wk, cat), max = catMax(cat);
+    const ridx = getRank(xp, max);
+    const rank = RANKS[ridx];
+    const pct = max ? Math.round(xp / max * 100) : 0;
+    const thresh = getRankThresholds(max);
+    const c = CATS[cat];
+    const nextIdx = Math.min(ridx + 1, RANKS.length - 1);
+    const nextRank = RANKS[nextIdx];
+    const nextXP = ridx < RANKS.length - 1 ? thresh[nextIdx][0] : max;
+    const toNext = Math.max(0, nextXP - xp);
+    // Rang de la semaine précédente
+    const prevWk = prevWeek(wk);
+    const prevXP = catXP(prevWk, cat);
+    const prevRidx = getRank(prevXP, max);
+    const prevRank = RANKS[prevRidx];
+    const hasPrevData = (scores[prevWk] !== undefined);
+
+    // Segments de rangs pour la jauge multi-segment
+    const rankSegments = RANK_PCTS.map(([lo,hi],i) => {
+      const loXP = lo * max, hiXP = hi * max;
+      const segFill = Math.min(Math.max(xp - loXP, 0), hiXP - loXP);
+      const segPct = (hiXP - loXP) > 0 ? (segFill / (hiXP - loXP)) * 100 : 0;
+      const segWidth = ((hi - lo) * 100);
+      return {rank: RANKS[i], segPct, segWidth, lo, hi, loXP, hiXP};
+    });
+
+    h += `<div class="sc-gauge-card" style="--cat-accent:${c.color}">
+      <div class="sc-gauge-header">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="sc-gauge-dot" style="background:${c.color};box-shadow:0 0 8px ${c.color}66"></span>
+          <span class="sc-gauge-name" style="color:${c.color}">${cat}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          ${hasPrevData ? `<span class="sc-gauge-avg-rank" title="Rang semaine précédente">S-1 <span class="rank-badge ${prevRank.cls}" style="font-size:10px;padding:1px 6px">${prevRank.name}</span></span>` : ''}
+          <span class="rank-badge ${rank.cls}">${rank.name}</span>
+        </div>
+      </div>
+
+      <div class="sc-gauge-xp-row">
+        <span class="sc-gauge-xp" style="color:${c.color}">${xp.toFixed(1)}</span>
+        <span class="sc-gauge-max">/ ${max} XP</span>
+        <span class="sc-gauge-pct">${pct}%</span>
+      </div>
+
+      <div class="sc-gauge-bar-wrap" title="${xp.toFixed(1)} / ${max} XP">
+        <div class="sc-gauge-track">
+          ${rankSegments.map((seg, i) => `
+            <div class="sc-gauge-seg" style="width:${seg.segWidth}%;position:relative">
+              <div class="sc-gauge-seg-fill" style="width:${seg.segPct}%;background:${c.color};opacity:${0.3+i*0.1}"></div>
+              ${i < rankSegments.length-1 ? `<div class="sc-gauge-tick"></div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+        <div class="sc-gauge-fill-overlay" style="width:${pct}%;background:linear-gradient(90deg,${c.color}88,${c.color})"></div>
+      </div>
+
+      <div class="sc-gauge-rank-labels">
+        ${RANKS.map((r,i)=>`<span class="sc-gauge-rank-lbl" style="opacity:${i<=ridx?1:.3};${i===ridx?`color:${c.color};font-weight:700`:''}">${r.name.slice(0,3)}</span>`).join('')}
+      </div>
+
+      <div class="sc-rank-steps">
+        ${RANKS.map((r,i) => {
+          const isCur = i === ridx, isDone = i < ridx;
+          return `<div class="sc-rank-pip ${isCur?'cur':''} ${isDone?'done':''}" style="${isCur?`background:${c.color};border-color:${c.color}`:isDone?`background:${c.color}55;border-color:${c.color}88`:''}">
+            <div class="sc-pip-tooltip">${r.name}<br>${i===0?'0 XP':`${thresh[i][0]}–${thresh[i][1]} XP`}</div>
+          </div>`;
+        }).join('')}
+      </div>
+
+      ${ridx < RANKS.length - 1
+        ? `<div class="sc-card-next">encore <b style="color:${c.color}">${toNext.toFixed(1)} XP</b> pour <span class="rank-badge ${nextRank.cls}" style="font-size:10px;padding:1px 6px">${nextRank.name}</span></div>`
+        : `<div class="sc-card-next" style="color:var(--gold)">🏆 Rang maximum atteint !</div>`}
+    </div>`;
   });
 
-  // ══════════════════════════════════════════════════════════
-  // BLOC 2 — MOIS EN COURS
-  // ══════════════════════════════════════════════════════════
-  const nowDate = new Date();
-  const monthName = nowDate.toLocaleDateString('fr-FR', {month:'long', year:'numeric'});
-  h += `<div style="border-top:1px solid var(--border);margin-bottom:20px"></div>`;
-  h += buildPeriodBlock({
-    periodLabel: 'Ce mois',
-    periodSublabel: monthName.charAt(0).toUpperCase() + monthName.slice(1),
-    heroXP: monthXP,
-    heroMax: monthMax,
-    heroPct: monthPct,
-    heroRank: monthRank,
-    heroRidx: monthRidx,
-    catXPFn: cat => catXPForWeeks(monthWeeks, cat)
-  });
-
-  // ══════════════════════════════════════════════════════════
-  // BLOC 3 — SEMAINE EN COURS
-  // ══════════════════════════════════════════════════════════
-  h += `<div style="border-top:1px solid var(--border);margin-bottom:20px"></div>`;
-  h += buildPeriodBlock({
-    periodLabel: 'Cette semaine',
-    periodSublabel: weekLabel(wk),
-    heroXP: weekXP,
-    heroMax: tMax,
-    heroPct: weekPct,
-    heroRank: weekRank,
-    heroRidx: weekRidx,
-    catXPFn: cat => catXP(wk, cat)
-  });
-
-  h += `<p style="margin-top:-8px;font-size:11px;color:var(--text3);text-align:center">Les seuils se recalculent selon le nombre de tâches actives.</p>`;
+  h += `</div>
+  <p style="margin-top:6px;font-size:11px;color:var(--text3);text-align:center">Les seuils se recalculent selon le nombre de tâches actives.</p>`;
 
   document.getElementById('tab-scores').innerHTML = h;
 }
@@ -1558,87 +1568,84 @@ function applyTheme() {
 }
 
 function renderThemeSettings() {
+  if (!currentUser) return;
   const accents = ['none','rose','blue','yellow','violet','green'];
   const accentLabels = {none:'Aucune',rose:'Rose',blue:'Bleu',yellow:'Jaune',violet:'Violet',green:'Vert'};
 
-  // ── Profile block (merged from Profile tab) ──
-  let profileBlock = '';
-  if (currentUser) {
-    const pseudo = userProfile.pseudo || currentUser.displayName || '';
-    const email = currentUser.email || '';
-    const providers = currentUser.providerData.map(p => {
-      if (p.providerId === 'google.com') return '🔵 Google';
-      if (p.providerId === 'password') return '✉️ Email / Mot de passe';
-      return p.providerId;
-    }).join(', ');
-    const photoSrc = userProfile.photoBase64 || currentUser.photoURL || '';
-    const avatarContent = photoSrc
-      ? `<img src="${photoSrc}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`
-      : `<span style="font-size:36px;line-height:1">${(pseudo||email||'?')[0].toUpperCase()}</span>`;
-
-    profileBlock = `
-    <div class="settings-section">
-      <h3>Mon Profil</h3>
-      <div class="profile-avatar-wrap">
-        <div class="profile-avatar" id="profile-avatar-btn" onclick="document.getElementById('avatar-file').click()" title="Changer la photo">
-          ${avatarContent}
-        </div>
-        <input type="file" id="avatar-file" accept="image/*" style="display:none" onchange="uploadAvatar(this)"/>
-        <div style="text-align:center">
-          <div class="profile-name">${pseudo || 'Sans pseudo'}</div>
-          <div class="profile-email">${email}</div>
-        </div>
-        <span class="sync-badge">☁ Synchronisation active</span>
-      </div>
-
-      <div class="profile-section">
-        <h4>Pseudonyme</h4>
-        <div class="profile-edit-row">
-          <input id="pseudo-input" type="text" placeholder="Ton pseudo…" value="${pseudo}"/>
-          <button onclick="savePseudo()">Enregistrer</button>
-        </div>
-      </div>
-
-      <div class="profile-section">
-        <h4>Informations du compte</h4>
-        <div class="profile-row">
-          <label>Email</label>
-          <span>${email || '—'}</span>
-        </div>
-        <div class="profile-row">
-          <label>Connexion via</label>
-          <span class="profile-provider-badge">${providers}</span>
-        </div>
-        <div class="profile-row">
-          <label>UID</label>
-          <span style="font-size:10px;color:var(--text3);word-break:break-all">${currentUser.uid.slice(0,16)}…</span>
-        </div>
-      </div>
-
-      <div class="profile-section">
-        <h4>Données</h4>
-        <div class="profile-row">
-          <label>Tâches enregistrées</label>
-          <span>${tasks.length}</span>
-        </div>
-        <div class="profile-row">
-          <label>Semaines trackées</label>
-          <span>${Object.keys(scores).length}</span>
-        </div>
-        <div class="profile-row">
-          <label>Catégories</label>
-          <span>${Object.keys(CATS).length}</span>
-        </div>
-      </div>
-
-      <button class="profile-signout" onclick="signOut()">Se déconnecter</button>
-    </div>`;
-  }
+  const pseudo = userProfile.pseudo || currentUser.displayName || '';
+  const email = currentUser.email || '';
+  const providers = currentUser.providerData.map(p => {
+    if (p.providerId === 'google.com') return '🔵 Google';
+    if (p.providerId === 'password') return '✉️ Email / Mot de passe';
+    return p.providerId;
+  }).join(', ');
+  const photoSrc = userProfile.photoBase64 || currentUser.photoURL || '';
+  const avatarContent = photoSrc
+    ? `<img src="${photoSrc}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`
+    : `<span style="font-size:36px;line-height:1">${(pseudo||email||'?')[0].toUpperCase()}</span>`;
 
   let h = `<h2 style="font-size:22px;margin-bottom:20px">Paramètres</h2>`;
-  h += profileBlock;
 
-  // Mode sombre / clair
+  // ── SECTION PROFIL (ex-onglet Profile) ──
+  h += `<div class="settings-section">
+    <h3>Profil</h3>
+
+    <div class="profile-avatar-wrap">
+      <div class="profile-avatar" id="profile-avatar-btn" onclick="document.getElementById('avatar-file-settings').click()" title="Changer la photo">
+        ${avatarContent}
+      </div>
+      <input type="file" id="avatar-file-settings" accept="image/*" style="display:none" onchange="uploadAvatar(this)"/>
+      <div style="text-align:center">
+        <div class="profile-name">${pseudo || 'Sans pseudo'}</div>
+        <div class="profile-email">${email}</div>
+      </div>
+      <span class="sync-badge">☁ Synchronisation active</span>
+    </div>
+
+    <div class="profile-section">
+      <h4>Pseudonyme</h4>
+      <div class="profile-edit-row">
+        <input id="pseudo-input" type="text" placeholder="Ton pseudo…" value="${pseudo}"/>
+        <button onclick="savePseudo()">Enregistrer</button>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h4>Informations du compte</h4>
+      <div class="profile-row">
+        <label>Email</label>
+        <span>${email || '—'}</span>
+      </div>
+      <div class="profile-row">
+        <label>Connexion via</label>
+        <span class="profile-provider-badge">${providers}</span>
+      </div>
+      <div class="profile-row">
+        <label>UID</label>
+        <span style="font-size:10px;color:var(--text3);word-break:break-all">${currentUser.uid.slice(0,16)}…</span>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h4>Données</h4>
+      <div class="profile-row">
+        <label>Tâches enregistrées</label>
+        <span>${tasks.length}</span>
+      </div>
+      <div class="profile-row">
+        <label>Semaines trackées</label>
+        <span>${Object.keys(scores).length}</span>
+      </div>
+      <div class="profile-row">
+        <label>Catégories</label>
+        <span>${Object.keys(CATS).length}</span>
+      </div>
+    </div>
+
+    <button class="profile-signout" onclick="signOut()">Se déconnecter</button>
+  </div>`;
+
+  // ── SECTION APPARENCE ──
   h += `<div class="settings-section">
     <h3>Mode</h3>
     <div class="theme-toggle">
@@ -1817,9 +1824,18 @@ function changeTaskCat(id,cat){
 }
 function changeWeek(dir){
   currentWeek=dir<0?prevWeek(currentWeek):nextWeek(currentWeek);
+  const realWeek = getWeekKey(new Date());
+  userNavigatedWeek = (currentWeek !== realWeek);
   renderAll();
 }
+function syncCurrentWeek() {
+  // Auto-avance uniquement si on est sur la semaine courante (pas en navigation manuelle)
+  if (!userNavigatedWeek) {
+    currentWeek = getWeekKey(new Date());
+  }
+}
 function showTab(tab,btn){
+  syncCurrentWeek();
   document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(el=>el.classList.remove('active'));
   if(btn)btn.classList.add('active');
@@ -1830,6 +1846,7 @@ function showTab(tab,btn){
   else if(tab==='settings')renderThemeSettings();
 }
 function renderAll(){
+  syncCurrentWeek();
   const tab=(document.querySelector('.tab.active')||{}).dataset?.tab||'tracker';
   if(tab==='tracker')renderTracker();
   else if(tab==='scores')renderScores();
@@ -1892,6 +1909,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
     setTimeout(() => { overlay.style.display = 'none'; }, 300);
 
     renderTracker();
+    renderThemeSettings();
   } else {
     currentUser = null;
     userProfile = {};
