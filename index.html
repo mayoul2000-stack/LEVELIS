@@ -736,7 +736,7 @@
 </div>
 
 <div class="header">
-  <h1>LEVELIS</h1><span style="font-size:10px;color:var(--text3);font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:.5px;margin-left:6px;align-self:flex-end;margin-bottom:3px">alpha 0.1</span>
+  <h1>LEVELIS</h1><span style="font-size:10px;color:var(--text3);font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:.5px;margin-left:6px;align-self:flex-end;margin-bottom:3px">alpha v0.1.1</span>
   <div class="save-indicator">
     <div class="save-dot saved" id="save-dot"></div>
     <span id="save-label">Prêt</span>
@@ -837,17 +837,19 @@ let userProfile = {};
 
 function save() {
   setSaveStatus('saving');
+  // Sauvegarde locale immédiate (synchrone) — un rechargement rapide ne perd plus rien
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({tasks, scores, nextId, cats: CATS})); } catch(e){}
   clearTimeout(cloudSaveTimer);
   cloudSaveTimer = setTimeout(async () => {
-    // Always save locally as fallback
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({tasks, scores, nextId, cats: CATS})); } catch(e){}
     // Save to Firestore if logged in
     if (currentUser) {
       try {
-        await firestore.collection('users').doc(currentUser.uid).set({
+        // Use update() so deleted categories/tasks are fully overwritten
+        // (merge:true would resurrect deleted keys from old Firestore data).
+        await firestore.collection('users').doc(currentUser.uid).update({
           tasks, scores, nextId, cats: CATS,
           updatedAt: new Date().toISOString()
-        }, { merge: true });
+        });
         setSaveStatus('saved');
       } catch(e) { setSaveStatus('error'); }
     } else {
@@ -1923,4 +1925,3 @@ firebase.auth().onAuthStateChanged(async (user) => {
 </script>
 </body>
 </html>
-
