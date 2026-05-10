@@ -212,8 +212,15 @@
   .task-grid .day-cell{padding:4px 3px;text-align:center;vertical-align:middle}
   .day-btns{display:flex;gap:2px;justify-content:center;align-items:center}
 
-  /* MANAGE TASK ROW */
-  .manage-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:8px;padding:9px 12px 9px 14px;border-radius:8px;margin-bottom:4px;background:var(--bg2);border:0.5px solid var(--border);transition:border-color .15s,background .15s}
+  /* DAY SELECTOR in manage */
+  .day-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+  .day-chip{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;color:var(--text3);font-size:9px;font-weight:700;cursor:pointer;transition:all .18s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;letter-spacing:.2px;--chip-color:var(--red)}
+  .day-chip.on{background:var(--chip-color);border-color:var(--chip-color);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+  .day-chip:hover:not(.on){border-color:var(--chip-color);color:var(--chip-color);transform:scale(1.12)}
+  .day-chip.on:hover{opacity:.82;transform:scale(1.08)}
+
+  /* MANAGE TASK ROW — expanded to allow day chips */
+  .manage-row{display:grid;grid-template-columns:1fr auto auto;align-items:start;gap:8px;padding:9px 12px 9px 14px;border-radius:8px;margin-bottom:4px;background:var(--bg2);border:0.5px solid var(--border);transition:border-color .15s,background .15s}
   .manage-row:hover{border-color:var(--border2);background:var(--bg3)}
   .manage-row .task-name{font-size:13px;font-weight:500;color:var(--text)}
   .manage-row select{font-size:12px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--border2);background:var(--bg3);color:var(--text2);transition:border-color .15s}
@@ -317,7 +324,66 @@
   .cp-btn-cancel:hover{border-color:var(--text2);color:var(--text)}
 
   /* MANAGE PAGE TITLE */
-  .manage-page-title{font-size:22px;margin-bottom:20px;color:var(--text)}
+  .manage-page-title{font-size:22px;margin-bottom:16px;color:var(--text)}
+
+  /* ── Sous-onglets dans Gérer les tâches ── */
+  .manage-subtabs{display:flex;gap:0;margin-bottom:20px;background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:3px;width:fit-content}
+  .manage-subtab{padding:7px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text2);transition:all .2s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+  .manage-subtab.active{background:var(--red);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+  .manage-subtab:hover:not(.active){color:var(--text)}
+  .manage-subpanel{display:none}.manage-subpanel.active{display:block}
+
+  /* ── Quêtes légendaires — harmonisées avec la DA du site ── */
+  .legend-add-form{display:flex;gap:8px;flex-wrap:wrap;padding:14px;background:var(--bg2);border-radius:10px;border:0.5px solid var(--border);align-items:center}
+  .legend-add-form input,.legend-add-form select{flex:1;min-width:120px;height:36px;border:0.5px solid var(--border2);border-radius:8px;padding:0 12px;font-size:13px;background:var(--bg3);color:var(--text);transition:border-color .15s;font-family:'DM Sans',sans-serif}
+  .legend-add-form input:focus,.legend-add-form select:focus{outline:none;border-color:var(--red)}
+  .legend-add-form input::placeholder{color:var(--text3)}
+  .legend-add-form input[type="date"]{color-scheme:dark;min-width:140px}
+  body.mode-light .legend-add-form input[type="date"]{color-scheme:light}
+  .legend-add-form button{height:36px;padding:0 18px;border-radius:8px;border:none;background:var(--red);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .15s;white-space:nowrap}
+  .legend-add-form button:hover{opacity:.85}
+
+  /* Quête row dans manage — même style que .manage-row */
+  .legend-row{display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:8px;padding:9px 12px 9px 14px;border-radius:8px;margin-bottom:4px;background:var(--bg2);border:0.5px solid var(--border);border-left:2px solid var(--gold);transition:border-color .15s,background .15s}
+  .legend-row:hover{border-color:var(--border2);background:var(--bg3)}
+  .legend-row-name{font-size:13px;font-weight:500;color:var(--text)}
+  .legend-row-meta{font-size:11px;color:var(--text2);margin-top:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .legend-date-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:var(--bg3);color:var(--gold);border:0.5px solid var(--border2);font-weight:600;white-space:nowrap}
+  .legend-cat-badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500}
+  .legend-xp-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:var(--bg3);color:var(--text2);border:0.5px solid var(--border2);white-space:nowrap}
+
+  /* Section quêtes dans le tracker — même structure que .task-section */
+  .legend-tracker-section{margin-bottom:22px}
+  .legend-tracker-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+  .legend-tracker-title{font-size:18px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;color:var(--gold)}
+  .legend-tracker-pill{font-size:11px;padding:2px 10px;border-radius:20px;font-weight:500;background:var(--bg3);color:var(--text2);border:0.5px solid var(--border2)}
+
+  /* Carte quête tracker — même style que les lignes task-grid */
+  .legend-tracker-card{background:var(--bg2);border:0.5px solid var(--border);border-left:2px solid var(--gold);border-radius:8px;padding:9px 12px;margin-bottom:3px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;transition:border-color .15s,background .15s}
+  .legend-tracker-card:hover{border-color:var(--border2);background:var(--bg3)}
+  .legend-tracker-card:last-child{margin-bottom:0}
+  .legend-tracker-info{flex:1;min-width:0}
+  .legend-tracker-name{font-size:13px;font-weight:500;color:var(--gold);display:flex;align-items:center;gap:6px}
+  .legend-tracker-name .lq-icon{font-size:11px;opacity:.7;flex-shrink:0}
+  .legend-tracker-meta{font-size:11px;color:var(--text2);margin-top:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .legend-tracker-btns{display:flex;gap:4px;align-items:center;flex-shrink:0}
+
+  /* Boutons quête — même style que .dot-btn */
+  .legend-btn{width:26px;height:26px;border-radius:50%;border:2px solid;cursor:pointer;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .15s;background:transparent}
+  .legend-btn.none{border-color:#e24b4a;color:#e24b4a}
+  .legend-btn.none.active{background:#e24b4a;color:#fff}
+  .legend-btn.half{border-color:#FF9800;color:#FF9800}
+  .legend-btn.half.active{background:#FF9800;color:#fff}
+  .legend-btn.full{border-color:#4CAF50;color:#4CAF50}
+  .legend-btn.full.active{background:#4CAF50;color:#fff}
+
+  /* XP affiché sur la carte quête */
+  .legend-xp-display{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--gold);white-space:nowrap;min-width:36px;text-align:right}
+
+  /* Header quêtes dans manage */
+  .legend-section-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+  .legend-section-header h3{font-size:18px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;color:var(--gold)}
+  .legend-section-pill{font-size:11px;padding:2px 10px;border-radius:20px;background:var(--bg3);color:var(--text2);border:0.5px solid var(--border2);font-weight:500}
 
   /* SCROLLBAR */
   ::-webkit-scrollbar{width:5px;height:5px}
@@ -837,7 +903,7 @@
 </div>
 
 <div class="header">
-  <h1>LEVELIS</h1><span style="font-size:10px;color:var(--text3);font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:.5px;margin-left:6px;align-self:flex-end;margin-bottom:3px">alpha v0.1.2</span>
+  <h1>LEVELIS</h1><span style="font-size:10px;color:var(--text3);font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:.5px;margin-left:6px;align-self:flex-end;margin-bottom:3px">alpha v0.2.0</span>
   <div class="save-indicator">
     <div class="save-dot saved" id="save-dot"></div>
     <span id="save-label">Prêt</span>
@@ -927,7 +993,9 @@ let tasks = [
   {id:23,name:'Regarder du contenu éducatif',cat:'Mental'}
 ];
 let scores = {};
+let quests = []; // [{id, name, date:'YYYY-MM-DD', cat:string|null, score:0|1|2}]
 let nextId = 24;
+let nextQuestId = 1;
 let currentWeek = getWeekKey(new Date());
 let userNavigatedWeek = false; // true quand l'utilisateur navigue manuellement
 
@@ -939,7 +1007,7 @@ let userProfile = {};
 function save() {
   setSaveStatus('saving');
   // Sauvegarde locale immédiate (synchrone) — un rechargement rapide ne perd plus rien
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({tasks, scores, nextId, cats: CATS})); } catch(e){}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({tasks, scores, nextId, cats: CATS, quests, nextQuestId})); } catch(e){}
   clearTimeout(cloudSaveTimer);
   cloudSaveTimer = setTimeout(async () => {
     // Save to Firestore if logged in
@@ -948,7 +1016,7 @@ function save() {
         // Use update() so deleted categories/tasks are fully overwritten
         // (merge:true would resurrect deleted keys from old Firestore data).
         await firestore.collection('users').doc(currentUser.uid).update({
-          tasks, scores, nextId, cats: CATS,
+          tasks, scores, nextId, cats: CATS, quests, nextQuestId,
           updatedAt: new Date().toISOString()
         });
         setSaveStatus('saved');
@@ -964,10 +1032,12 @@ async function loadFromCloud(uid) {
     const doc = await firestore.collection('users').doc(uid).get();
     if (doc.exists) {
       const d = doc.data();
-      if (d.tasks)  tasks  = d.tasks;
-      if (d.scores) scores = d.scores;
-      if (d.nextId) nextId = d.nextId;
-      if (d.cats)   CATS   = d.cats;
+      if (d.tasks)       tasks       = d.tasks;
+      if (d.scores)      scores      = d.scores;
+      if (d.nextId)      nextId      = d.nextId;
+      if (d.cats)        CATS        = d.cats;
+      if (d.quests)      quests      = d.quests;
+      if (d.nextQuestId) nextQuestId = d.nextQuestId;
     }
   } catch(e) {
     // Fallback to localStorage
@@ -980,10 +1050,12 @@ function loadSavedLocal() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const d = JSON.parse(raw);
-    if (d.tasks)  tasks  = d.tasks;
-    if (d.scores) scores = d.scores;
-    if (d.nextId) nextId = d.nextId;
-    if (d.cats)   CATS   = d.cats;
+    if (d.tasks)       tasks       = d.tasks;
+    if (d.scores)      scores      = d.scores;
+    if (d.nextId)      nextId      = d.nextId;
+    if (d.cats)        CATS        = d.cats;
+    if (d.quests)      quests      = d.quests;
+    if (d.nextQuestId) nextQuestId = d.nextQuestId;
   } catch(e) {}
 }
 
@@ -1203,10 +1275,32 @@ function nextWeek(k){const d=parseLocal(k);d.setDate(d.getDate()+7);return toKey
 // ── XP / RANK ─────────────────────────────────────────────
 function getScore(wk,id,day){return (scores[wk]||{})[id+'-'+day]||0}
 function setScore(wk,id,day,val){if(!scores[wk])scores[wk]={};scores[wk][id+'-'+day]=val}
-function catXP(wk,cat){return tasks.filter(t=>t.cat===cat).reduce((s,t)=>s+DAYS.reduce((a,d)=>a+getScore(wk,t.id,d),0),0)}
-function catMax(cat){return tasks.filter(t=>t.cat===cat).length*7}
-function totalXP(wk){return Object.keys(CATS).reduce((s,c)=>s+catXP(wk,c),0)}
-function totalMax(){return Object.keys(CATS).reduce((s,c)=>s+catMax(c),0)}
+function taskActiveDays(t){return t.activeDays||DAYS.map(()=>true)}
+function taskActiveCount(t){return taskActiveDays(t).filter(Boolean).length}
+function isDayActive(t,dayIdx){const ad=taskActiveDays(t);return ad[dayIdx]!==false}
+function catXP(wk,cat){
+  const taskXP=tasks.filter(t=>t.cat===cat).reduce((s,t)=>s+DAYS.reduce((a,d,i)=>a+(isDayActive(t,i)?getScore(wk,t.id,d):0),0),0);
+  const questXP=quests.filter(q=>q.cat===cat&&getWeekKey(parseLocal(q.date))===wk).reduce((s,q)=>s+(q.score||0),0);
+  return taskXP+questXP;
+}
+function catMax(cat){
+  // Quests are bonus — never counted in max
+  return tasks.filter(t=>t.cat===cat).reduce((s,t)=>s+taskActiveCount(t),0);
+}
+// Total XP includes quest bonus but max stays purely task-based
+function totalXP(wk){
+  const taskCatXP=Object.keys(CATS).reduce((s,c)=>{
+    const tXP=tasks.filter(t=>t.cat===c).reduce((a,t)=>a+DAYS.reduce((b,d,i)=>b+(isDayActive(t,i)?getScore(wk,t.id,d):0),0),0);
+    const qXP=quests.filter(q=>q.cat===c&&getWeekKey(parseLocal(q.date))===wk).reduce((a,q)=>a+(q.score||0),0);
+    return s+tXP+qXP;
+  },0);
+  const uncatQXP=quests.filter(q=>!q.cat&&getWeekKey(parseLocal(q.date))===wk).reduce((s,q)=>s+(q.score||0),0);
+  return taskCatXP+uncatQXP;
+}
+function totalMax(){
+  // Max is purely task-based — quests are bonus
+  return Object.keys(CATS).reduce((s,c)=>s+catMax(c),0);
+}
 function getRank(xp,max){
   if(!max)return 0;
   const p=xp/max;
@@ -1305,6 +1399,52 @@ function renderTracker() {
     h += '</div></div>';
   }
 
+  // ── QUÊTES LÉGENDAIRES — en priorité avant les tâches ──
+  const todayStr = isCurrentWeek ? toKey(new Date()) : null;
+  const weekDates = DAYS.map((_,i)=>{const d=parseLocal(wk);d.setDate(d.getDate()+i);return toKey(d);});
+  const legendaryThisWeek = quests.filter(q=>weekDates.includes(q.date));
+  if(legendaryThisWeek.length > 0){
+    const byDate={};
+    legendaryThisWeek.forEach(q=>{if(!byDate[q.date])byDate[q.date]=[];byDate[q.date].push(q);});
+    Object.keys(byDate).sort().forEach(dateStr=>{
+      const dayQuests=byDate[dateStr];
+      const isThisToday=dateStr===todayStr;
+      const isPast=dateStr<(todayStr||'9999');
+      const dateObj=parseLocal(dateStr);
+      const dayLabel=dateObj.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+      const bonusXP=dayQuests.reduce((s,q)=>s+(q.score||0),0);
+      h+=`<div class="legend-tracker-section" style="${isPast&&!isThisToday?'opacity:.55':''}">
+        <div class="legend-tracker-header">
+          <h3 class="legend-tracker-title">Quêtes Légendaires</h3>
+          <span class="legend-tracker-pill">${isThisToday?'Aujourd\'hui · ':isPast?'Passée · ':''}${dayLabel} · +${bonusXP} XP</span>
+        </div>`;
+      dayQuests.forEach(q=>{
+        const sc=q.score||0;
+        const catC=q.cat&&CATS[q.cat]?CATS[q.cat].color:null;
+        h+=`<div class="legend-tracker-card">
+          <div class="legend-tracker-info">
+            <div class="legend-tracker-name"><span class="lq-icon"> </span>${q.name}</div>
+            <div class="legend-tracker-meta">
+              ${q.cat&&catC
+                ?`<span class="legend-cat-badge" style="background:${CATS[q.cat].bg};color:${CATS[q.cat].textCol}">${q.cat}</span>`
+                :`<span style="font-size:11px;color:var(--text3)">Sans catégorie</span>`}
+              <span class="legend-xp-badge">+2 XP max</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="legend-tracker-btns">
+              <button class="legend-btn none${sc===0?' active':''}" onclick="toggleQuestScore(${q.id},0)" title="Non réalisée">✕</button>
+              <button class="legend-btn half${sc===1?' active':''}" onclick="toggleQuestScore(${q.id},1)" title="Partiellement réalisée">½</button>
+              <button class="legend-btn full${sc===2?' active':''}" onclick="toggleQuestScore(${q.id},2)" title="Complètement réalisée">✓</button>
+            </div>
+            <div class="legend-xp-display">+${sc} XP</div>
+          </div>
+        </div>`;
+      });
+      h+=`</div>`;
+    });
+  }
+
   Object.keys(CATS).forEach(cat => {
     const catTasks=tasks.filter(t=>t.cat===cat);
     if(!catTasks.length)return;
@@ -1330,15 +1470,24 @@ function renderTracker() {
         <tbody>`;
     catTasks.forEach(t => {
       h+=`<tr><td style="color:${c.color}">${t.name}</td>`;
-      DAYS.forEach(day => {
+      DAYS.forEach((day,di) => {
         const sc=getScore(wk,t.id,day);
+        const active=isDayActive(t,di);
         h+=`<td class="day-cell"><div class="day-btns">`;
-        [[0,'red','✕'],[0.5,'ora','½'],[1,'grn','✓']].forEach(([v,cls,lbl])=>{
-          h+=`<button class="dot-btn ${cls}${sc===v?' active':''}" onclick="toggleScore('${wk}',${t.id},'${day}',${v})">${lbl}</button>`;
-        });
+        if(!active){
+          h+=`<div style="display:flex;gap:2px;justify-content:center;align-items:center;opacity:.22;pointer-events:none">`;
+          [[0,'red','✕'],[0.5,'ora','½'],[1,'grn','✓']].forEach(([v,cls,lbl])=>{
+            h+=`<button class="dot-btn" style="border-color:#555;color:#555;cursor:default">${lbl}</button>`;
+          });
+          h+=`</div>`;
+        } else {
+          [[0,'red','✕'],[0.5,'ora','½'],[1,'grn','✓']].forEach(([v,cls,lbl])=>{
+            h+=`<button class="dot-btn ${cls}${sc===v?' active':''}" onclick="toggleScore('${wk}',${t.id},'${day}',${v})">${lbl}</button>`;
+          });
+        }
         h+=`</div></td>`;
       });
-      const rowXP=DAYS.reduce((s,d)=>s+getScore(wk,t.id,d),0);
+      const rowXP=DAYS.reduce((s,d,di)=>s+(isDayActive(t,di)?getScore(wk,t.id,d):0),0);
       h+=`<td style="color:${c.color}">${rowXP.toFixed(1)} XP</td></tr>`;
     });
     h+=`</tbody></table></div>`;
@@ -1346,7 +1495,7 @@ function renderTracker() {
     /* ── VERSION MOBILE : cartes par tâche ── */
     h+=`<div class="task-mobile">`;
     catTasks.forEach(t => {
-      const rowXP=DAYS.reduce((s,d)=>s+getScore(wk,t.id,d),0);
+      const rowXP=DAYS.reduce((s,d,di)=>s+(isDayActive(t,di)?getScore(wk,t.id,d):0),0);
       h+=`<div class="m-task-card">
         <div class="m-task-header">
           <span class="m-task-name" style="color:${c.color}">${t.name}</span>
@@ -1356,11 +1505,16 @@ function renderTracker() {
       DAYS.forEach((day,di) => {
         const sc=getScore(wk,t.id,day);
         const isToday = di === todayDayIdx;
+        const active=isDayActive(t,di);
         h+=`<div class="m-day-col">
           <div class="m-day-label" style="${isToday?'color:var(--text);font-weight:700;font-size:10px':''}">${day.slice(0,2)}${isToday?'<span style="display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--red);margin-left:1px;vertical-align:middle"></span>':''}</div>
-          <div class="m-day-btns">`;
+          <div class="m-day-btns"${active?'':' style="opacity:.22;pointer-events:none"'}>`;
         [[0,'red','✕'],[0.5,'ora','½'],[1,'grn','✓']].forEach(([v,cls,lbl])=>{
-          h+=`<button class="dot-btn ${cls}${sc===v?' active':''}" onclick="toggleScore('${wk}',${t.id},'${day}',${v})">${lbl}</button>`;
+          if(active){
+            h+=`<button class="dot-btn ${cls}${sc===v?' active':''}" onclick="toggleScore('${wk}',${t.id},'${day}',${v})">${lbl}</button>`;
+          } else {
+            h+=`<button class="dot-btn" style="border-color:#555;color:#555;cursor:default">${lbl}</button>`;
+          }
         });
         h+=`</div></div>`;
       });
@@ -1551,21 +1705,36 @@ function renderScores() {
   document.getElementById('tab-scores').innerHTML = h;
 }
 
-// ── RENDER MANAGE (ex-settings) ───────────────────────────
+// ── RENDER MANAGE ─────────────────────────────────────────
+let _manageSubtab = 'tasks'; // 'tasks' | 'quests'
+
+function switchManageSubtab(tab) {
+  _manageSubtab = tab;
+  renderManage();
+}
+
 function renderManage() {
   const catKeys = Object.keys(CATS);
   const canDelete = catKeys.length > MIN_CATS;
 
-  let h = '<h2 class="manage-page-title">Gérer les tâches</h2>';
+  let h = `<h2 class="manage-page-title">Gérer les tâches</h2>
+  <div class="manage-subtabs">
+    <button class="manage-subtab${_manageSubtab==='tasks'?' active':''}" onclick="switchManageSubtab('tasks')">✏️ Gestion des tâches</button>
+    <button class="manage-subtab${_manageSubtab==='quests'?' active':''}" onclick="switchManageSubtab('quests')">⚡ Quêtes légendaires</button>
+  </div>`;
 
-  // ── Section: Catégories ──────────────────────────────────
+  // ══════════════════════════════════════════════════════════
+  // SUB-PANEL 1 : GESTION DES TÂCHES
+  // ══════════════════════════════════════════════════════════
+  h += `<div class="manage-subpanel${_manageSubtab==='tasks'?' active':''}" id="manage-sub-tasks">`;
+
+  // Catégories
   h += `<div class="manage-section-block">
     <div class="manage-section-title">
       <span>Catégories</span>
       <button class="manage-section-title-btn" onclick="addCategory()">+ Nouvelle</button>
     </div>
     <div class="cat-manage-list">`;
-
   catKeys.forEach((cat, idx) => {
     const c = CATS[cat];
     const taskCount = tasks.filter(t=>t.cat===cat).length;
@@ -1586,8 +1755,6 @@ function renderManage() {
       </div>
     </div>`;
   });
-
-  // Color picker popup (hidden, revealed via JS)
   h += `</div>
     <div id="color-picker-popup" class="color-picker-popup-new" style="display:none">
       <div class="cp-title">Couleur pour <b id="color-picker-cat-name"></b></div>
@@ -1604,11 +1771,9 @@ function renderManage() {
     </div>
   </div>`;
 
-  // ── Section: Ajouter une tâche ─────────────────────────
+  // Nouvelle tâche
   h += `<div class="manage-section-block">
-    <div class="manage-section-title">
-      <span>Nouvelle tâche</span>
-    </div>
+    <div class="manage-section-title"><span>Nouvelle tâche</span></div>
     <div class="manage-add-form">
       <input id="new-task-name" type="text" placeholder="Nom de la tâche…" onkeydown="if(event.key==='Enter')addTask()"/>
       <select id="new-task-cat">${catKeys.map(c=>`<option>${c}</option>`).join('')}</select>
@@ -1616,10 +1781,9 @@ function renderManage() {
     </div>
   </div>`;
 
-  // ── Section: Tâches par catégorie ──────────────────────
+  // Tâches par catégorie
   h += `<div class="manage-section-block">
     <div class="manage-section-title"><span>Tâches</span></div>`;
-
   catKeys.forEach(cat => {
     const catTasks = tasks.filter(t => t.cat === cat);
     const c = CATS[cat];
@@ -1633,23 +1797,88 @@ function renderManage() {
       h += `<div class="manage-empty-cat">Aucune tâche dans cette catégorie</div>`;
     } else {
       catTasks.forEach(t => {
+        const dayLabels=['Lu','Ma','Me','Je','Ve','Sa','Di'];
+        const chips=DAYS.map((d,i)=>{
+          const on=isDayActive(t,i);
+          return `<button class="day-chip${on?' on':''}" style="--chip-color:${c.color}" onclick="toggleTaskDay(${t.id},${i})" title="${d}">${dayLabels[i]}</button>`;
+        }).join('');
+        const activeCount=taskActiveCount(t);
         h += `<div class="manage-row">
-          <div class="task-name">${t.name}</div>
-          <select onchange="changeTaskCat(${t.id},this.value)">
+          <div>
+            <div class="task-name">${t.name}</div>
+            <div class="day-chips">${chips}</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:3px">${activeCount} jour${activeCount!==1?'s':''} actif${activeCount!==1?'s':''} · ${activeCount} XP max/sem</div>
+          </div>
+          <select onchange="changeTaskCat(${t.id},this.value)" style="align-self:flex-start;margin-top:2px">
             ${catKeys.map(c2=>`<option${c2===t.cat?' selected':''}>${c2}</option>`).join('')}
           </select>
-          <button class="del-btn" onclick="deleteTask(${t.id})" title="Supprimer">✕</button>
+          <button class="del-btn" onclick="deleteTask(${t.id})" title="Supprimer" style="align-self:flex-start;margin-top:2px">✕</button>
         </div>`;
       });
     }
     h += `</div></div>`;
   });
-
   h += `</div>`;
+  h += `</div>`; // end manage-sub-tasks
+
+  // ══════════════════════════════════════════════════════════
+  // SUB-PANEL 2 : QUÊTES LÉGENDAIRES
+  // ══════════════════════════════════════════════════════════
+  h += `<div class="manage-subpanel${_manageSubtab==='quests'?' active':''}" id="manage-sub-quests">`;
+
+  // Formulaire ajout
+  h += `<div class="manage-section-block">
+    <div class="manage-section-title"><span>Nouvelle quête légendaire</span></div>
+    <div class="legend-add-form">
+      <input id="new-quest-name" type="text" placeholder="Titre de la quête…" style="flex:2;min-width:160px" onkeydown="if(event.key==='Enter')addQuest()"/>
+      <input id="new-quest-date" type="date" value="${toKey(new Date())}" style="min-width:150px"/>
+      <select id="new-quest-cat">
+        <option value="">— Sans catégorie —</option>
+        ${catKeys.map(c=>`<option value="${c}">${c}</option>`).join('')}
+      </select>
+      <button onclick="addQuest()">⚡ Ajouter</button>
+    </div>
+  </div>`;
+
+  // Liste des quêtes
+  h += `<div class="manage-section-block">
+    <div class="manage-section-title"><span>Quêtes planifiées</span></div>`;
+  if(quests.length === 0){
+    h += `<div style="padding:24px;text-align:center;color:var(--text3);font-size:13px;font-style:italic;background:var(--bg2);border-radius:10px;border:0.5px solid var(--border)">
+      Aucune quête légendaire pour l'instant.<br><span style="font-size:11px;opacity:.7">Crée une quête liée à un jour précis pour la voir apparaître dans le Tracker ce jour-là.</span>
+    </div>`;
+  } else {
+    const todayStr=toKey(new Date());
+    const sorted=[...quests].sort((a,b)=>a.date.localeCompare(b.date));
+    sorted.forEach(q=>{
+      const isPast=q.date<todayStr;
+      const isToday=q.date===todayStr;
+      const dateObj=parseLocal(q.date);
+      const dateFmt=dateObj.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+      const catC=q.cat&&CATS[q.cat]?CATS[q.cat].color:null;
+      h += `<div class="legend-row" style="${isPast?'opacity:.55':''}">
+        <div>
+          <div class="legend-row-name">⚡ ${q.name}</div>
+          <div class="legend-row-meta">
+            <span class="legend-date-badge">${isToday?'Aujourd\'hui · ':isPast?'Passée · ':''}${dateFmt}</span>
+            ${q.cat&&catC?`<span class="legend-cat-badge" style="background:${CATS[q.cat].bg};color:${CATS[q.cat].textCol}">${q.cat}</span>`:'<span style="font-size:11px;color:var(--text3)">Sans catégorie</span>'}
+            <span class="legend-xp-badge">${q.score||0} / 2 XP</span>
+          </div>
+        </div>
+        <select onchange="changeQuestCat(${q.id},this.value)" style="font-size:12px;padding:3px 8px;border-radius:6px;border:0.5px solid var(--border2);background:var(--bg3);color:var(--text2)">
+          <option value=""${!q.cat?' selected':''}>— Sans catégorie —</option>
+          ${catKeys.map(c=>`<option value="${c}"${c===q.cat?' selected':''}>${c}</option>`).join('')}
+        </select>
+        <input type="date" value="${q.date}" onchange="changeQuestDate(${q.id},this.value)" style="font-size:12px;height:30px;border:0.5px solid var(--border2);border-radius:6px;padding:0 8px;background:var(--bg3);color:var(--text);font-family:'DM Sans',sans-serif;color-scheme:dark"/>
+        <button class="del-btn" onclick="deleteQuest(${q.id})" title="Supprimer">✕</button>
+      </div>`;
+    });
+  }
+  h += `</div>`;
+  h += `</div>`; // end manage-sub-quests
 
   document.getElementById('tab-manage').innerHTML = h;
 
-  // Init color picker custom input live preview
   const cpInput = document.getElementById('color-picker-custom');
   if (cpInput) {
     cpInput.addEventListener('input', () => {
@@ -1658,6 +1887,8 @@ function renderManage() {
     });
   }
 }
+
+
 
 // ── RENDER SETTINGS (thème) ───────────────────────────────
 const ACCENT_COLORS = {
@@ -1917,6 +2148,47 @@ function closeColorPicker() {
 }
 
 // ── ACTIONS ───────────────────────────────────────────────
+function toggleTaskDay(id,dayIdx){
+  const t=tasks.find(t=>t.id===id);
+  if(!t)return;
+  if(!t.activeDays)t.activeDays=DAYS.map(()=>true);
+  // Prevent disabling all days (keep at least 1)
+  const wouldBeOff=t.activeDays.filter(Boolean).length===1&&t.activeDays[dayIdx]===true;
+  if(wouldBeOff){showToast('La tâche doit avoir au moins 1 jour actif.');return;}
+  t.activeDays[dayIdx]=!t.activeDays[dayIdx];
+  save(); renderManage(); renderAll();
+}
+function toggleQuestScore(id,val){
+  const q=quests.find(q=>q.id===id);
+  if(!q)return;
+  q.score=(q.score===val)?0:val;
+  save(); renderAll();
+}
+function addQuest(){
+  const nameEl=document.getElementById('new-quest-name');
+  const dateEl=document.getElementById('new-quest-date');
+  const catEl=document.getElementById('new-quest-cat');
+  const name=nameEl?nameEl.value.trim():'';
+  const date=dateEl?dateEl.value:'';
+  if(!name||!date){showToast('Titre et date requis.');return;}
+  const cat=catEl?catEl.value:'';
+  quests.push({id:nextQuestId++,name,date,cat:cat||null,score:0});
+  save(); renderManage(); renderAll();
+}
+function deleteQuest(id){
+  quests=quests.filter(q=>q.id!==id);
+  save(); renderManage(); renderAll();
+}
+function changeQuestCat(id,cat){
+  const q=quests.find(q=>q.id===id);
+  if(q)q.cat=cat||null;
+  save(); renderAll();
+}
+function changeQuestDate(id,date){
+  const q=quests.find(q=>q.id===id);
+  if(q&&date)q.date=date;
+  save(); renderManage(); renderAll();
+}
 function toggleScore(wk,id,day,val){
   const cur=getScore(wk,id,day);
   setScore(wk,id,day,cur===val?0:val);
